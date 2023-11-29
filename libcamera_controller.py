@@ -118,6 +118,7 @@ class camera:
 				elif keyword == "b":
 					self.vid_options_dict["--bitrate"] = (kwargs[keyword])
 				else:
+					unrecognized_keyword += 1
 					print(f"Keyword '{keyword}' not recognized as a supported option. Proceeding...")
 			print("Camera options have been configured. Use show_options() to see the current configuration.")
 			if unrecognized_keyword > 0:
