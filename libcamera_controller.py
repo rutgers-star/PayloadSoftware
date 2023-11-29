@@ -88,6 +88,8 @@ class camera:
 			if args[0][0:9] == "libcamera":
 				self.run(args[0])
 		if len(kwargs) > 0:
+			unrecognized_keyword = 0
+			print("Configuring camera options...")
 			for keyword in kwargs:
 				option = "--" + keyword.replace("_", "-")
 				if option == "--info-text" or keyword == "infotext":
@@ -115,6 +117,11 @@ class camera:
 					self.options_dict["--fullscreen"] = kwargs[keyword]
 				elif keyword == "b":
 					self.vid_options_dict["--bitrate"] = (kwargs[keyword])
+				else:
+					print(f"Keyword '{keyword}' not recognized as a supported option. Proceeding...")
+			print("Camera options have been configured. Use show_options() to see the current configuration.")
+			if unrecognized_keyword > 0:
+				print("If an option is not recognized by this class, try passing the full command through run() instead.")
 	
 	
 	def show_options(self):
