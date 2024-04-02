@@ -1,0 +1,11 @@
+[0:02:57.997204135] [3760] [1;32m INFO [1;37mCamera [1;34mcamera_manager.cpp:284 [0mlibcamera v0.1.0+57-161be650
+[0:02:58.100716561] [3768] [1;32m INFO [1;37mRPI [1;34mvc4.cpp:387 [0mRegistered camera /base/soc/i2c0mux/i2c@1/ov5647@36 to Unicam device /dev/media0 and ISP device /dev/media1
+Mode selection:
+    SGBRG10_CSI2P 640x480 - Score: 5093.33
+    SGBRG10_CSI2P 1296x972 - Score: 4525.33
+    SGBRG10_CSI2P 1920x1080 - Score: 3375
+    SGBRG10_CSI2P 2592x1944 - Score: 21825.2
+Stream configuration adjusted
+[0:02:58.121389135] [3760] [1;32m INFO [1;37mCamera [1;34mcamera.cpp:1181 [0mconfiguring streams: (0) 960x540-YUV420 (1) 1920x1080-SRGGB10_CSI2P
+[0:02:58.122442166] [3768] [1;32m INFO [1;37mRPI [1;34mvc4.cpp:544 [0mSensor: /base/soc/i2c0mux/i2c@1/ov5647@36 - Selected sensor format: 1920x1080-SRGGB10_1X10 - Selected unicam format: 1920x1080-pRAA
+Halting: reached timeout of 20000 milliseconds.
