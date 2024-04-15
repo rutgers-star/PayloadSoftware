@@ -18,7 +18,7 @@ __creation_date__="1/22/2024"
 __version__ = "1.0.0"
 __maintainer__ = "Simon Kowerski"
 __email__ = "kowerski8@gmail.com"
-__status__ = "Development"
+__status__ = "Release"
 
 __path = "Logs/"
 
@@ -48,7 +48,7 @@ def log(code:str, extra=''):
         message = f"    {codemsg.readlines()[code]}"
     else:
         codemsg = open(f"{__path}00-error-codes.txt", "r")
-        message = f"ERR {codemsg.readlines()[code]}"
+        message = f"ERR {codemsg.readlines()[code-1000]}"
 
     t = time.localtime()
     current_time = time.strftime("%H:%M:%S", t)
