@@ -53,7 +53,7 @@ def log(code:str, extra=''):
     t = time.localtime()
     current_time = time.strftime("%H:%M:%S", t)
 
-    file.write(f'{current_time} {message} {extra}\n')
+    file.write(f'{current_time} {message} {extra}'[:-1])
     file.close()
 
 def open_experiment(experiment_num:int):
