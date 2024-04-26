@@ -44,16 +44,16 @@ def log(code:str, extra=''):
     
     # writes the correct code to the file
     if code < 1000:
-        codemsg = open(f"{__path}01-event-codes.txt", "r")
+        codemsg = open(f"{__path}00-event-codes.txt", "r")
         message = f"    {codemsg.readlines()[code]}"
     else:
-        codemsg = open(f"{__path}00-error-codes.txt", "r")
+        codemsg = open(f"{__path}01-error-codes.txt", "r")
         message = f"ERR {codemsg.readlines()[code-1000]}"
 
     t = time.localtime()
     current_time = time.strftime("%H:%M:%S", t)
 
-    file.write(f'{current_time} {message} {extra}'[:-1])
+    file.write(f'{current_time} {message[:-1]} {extra}\n')
     file.close()
 
 def open_experiment(experiment_num:int):

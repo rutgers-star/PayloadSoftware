@@ -298,10 +298,10 @@
 1297 - 
 1298 - 
 1299 - 
-1300 - 
-1301 - 
-1302 - 
-1303 - 
+1300 - Failed to generate torque command
+1301 - Failed to generate speed command
+1302 - Failed to generate read command
+1303 - Failed to send command to DCE
 1304 - 
 1305 - 
 1306 - 
