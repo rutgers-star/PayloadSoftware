@@ -14,4 +14,4 @@ Running control_loop.py will invoke all the rest of te modules to run a complete
 
 ## Authors
 
-- Mike Fogel
+- [@mikefogelny](https://github.com/mikefogelny)
