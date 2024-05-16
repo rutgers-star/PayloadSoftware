@@ -302,8 +302,8 @@
 1301 - Failed to generate speed command
 1302 - Failed to generate read command
 1303 - Failed to send command to DCE
-1304 - 
-1305 - 
+1304 - Failed to recieve data from DCE
+1305 - Recieved incorrect data from DCE
 1306 - 
 1307 - 
 1308 - 

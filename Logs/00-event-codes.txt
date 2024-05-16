@@ -299,10 +299,10 @@
 0298 - 
 0299 - 
 0300 - Requested torque command
-0301 - Successfully generated torque command
-0302 - Requested speed command
-0303 - Successfully generated speed command
-0304 - Successfully sent command to DCE
+0301 - Requested speed command
+0302 - Requested read command
+0303 - Successfully sent command to DCE
+0304 - Successfully recieved data from DCE
 0305 - 
 0306 - 
 0307 - 
