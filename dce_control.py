@@ -2,7 +2,6 @@
 
 """
 A module written to generate commands to control the Blue Canyon Technologies D.C.E. and execute the commands on the device. 
-**MODULE STILL BEING DEVELOPED**
 """
 
 import serial
@@ -89,6 +88,7 @@ def convert_from_hex(parameter_hex:str,conversion_factor=1.0):
 
     return ret * conversion_factor
 
+#FIXME: When writing to one wheel, read from DCE to fill in missing values
 def set_wheel_torque(wheel_num:int,wheel_rate:float):
     """
     Generates and sends a code to the DCE to set the torque on one or all of the reaction wheels.
@@ -150,6 +150,7 @@ def set_wheel_torque(wheel_num:int,wheel_rate:float):
 
     return ret[:-1], _send_command(ret)
 
+#FIXME: When writing to one wheel, read from DCE to fill in missing values
 def set_wheel_speed(wheel_num:int,wheel_rate:float):
     """
     Generates and sends a code to the DCE to set the speed of one or all of the reaction wheels.
@@ -287,9 +288,24 @@ def read_data(read_type:str):
     if not _verify_output(actual):  
         log(1305)
         return wheel_set, actual, ret_command, False
-
-
+        
     return wheel_set, actual, ret_command, True
+
+#TODO: Does not have a docstring 
+def _verify_output(input_data:str):
+    POLYNOMIAL=(0x1070<<3)
+    crc=0xFF
+    for j in range(0, int((len(input_data)-2)/2)):
+        data=crc^int(input_data[(2*j):(2*(j+1))], 16)
+        data<<=8
+        for i in range(8):
+            if((data & 0x8000)!=0):
+                data=data^POLYNOMIAL
+            data<<=1
+        crc=data>>8
+        #print(str(input_data[(2*j):(2*(j+1))]) + "\t" + str(hex(crc)[2:]))
+    
+    return hex(crc)[2:].upper() == input_data[-2:].upper()
 
 def _send_command(hex_code:str):
     """
@@ -353,4 +369,4 @@ for item in dce_data:
     
 print(wheel_set)        
 #https://github.com/niccokunzmann/crc8/blob/master/crc8.py
-
+print(_verify_output("1ACF1000000401020304FA"))
