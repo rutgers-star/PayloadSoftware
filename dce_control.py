@@ -341,6 +341,7 @@ def _send_command(hex_code:str):
     log(303, f"- {hex_code}")
     return True
 
+'''
 #input 1 selects the wheel input 2 sets the torque
 #torque is limited to -21.4748 to 21.4748 Nm as specified by BCT documentation
 print(set_wheel_torque(2,-21.4748)[0])
@@ -354,6 +355,7 @@ print(set_wheel_speed(4,-6355.7)[0])
 #print(read_data("torque"))
 
 #reading tests
+
 length=2
 actual=format(0x1acf0000000083de83de7bb87bb800, "b")
 actual=hex(int(actual, 2))[2:]
@@ -375,3 +377,4 @@ for item in dce_data:
     
 print(wheel_set)        
 print(_verify_output("1ACF1000000401020304FA"))
+'''

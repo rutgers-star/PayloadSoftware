@@ -7,17 +7,17 @@ open_experiment(0)
 again=True
 
 def error_handler():
-    set_wheel_speed(0, 0)
-    set_wheel_torque(0, 0)
+    #set_wheel_speed(0, 0)
+    #set_wheel_torque(0, 0)
     print("ERROR")
     print("An error occured, see log file for details")
-    print("Wheel speed and torque set to zero as a precaution")
+    #print("Wheel speed and torque set to zero as a precaution")
     print("Ending experiment")
 
 while again:
     setting=input("Do you want to test SPEED or TORQUE: ")
     setting=setting.upper()
-    while not (setting=="T" or setting=="S"):
+    while not (setting=="TORQUE" or setting=="SPEED"):
         print("Invalid input")
         setting=input("Do you want to test SPEED or TORQUE: ")
 
@@ -25,9 +25,9 @@ while again:
     
     match setting:
         case "TORQUE":
-            result=set_wheel_torque(1, value)
+            result=set_wheel_torque(1, int(value))
         case "SPEED":
-            result=set_wheel_speed(1, value)
+            result=set_wheel_speed(1, int(value))
         
     if not result[-1]:
         error_handler()
@@ -47,7 +47,7 @@ while again:
 
         sleep(15)
 
-        if input("Do you wish to test another value (Y or N)?") is not "Y": 
+        if input("Do you wish to test another value (Y or N)?") != "Y": 
             again=False
 
 
