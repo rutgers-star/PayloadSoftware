@@ -1,3 +1,5 @@
+import traceback    
+
 class DCE_ERROR(BaseException):
     __codes = [
         "1300 - Failed to generate torque command",
@@ -17,7 +19,6 @@ class DCE_ERROR(BaseException):
 
         cur = int((front + back) / 2)
         current = int(codes[cur][:4])
-        print(current)
 
         if(front > back):
             return -1 
@@ -32,8 +33,13 @@ class DCE_ERROR(BaseException):
             return self.__binary_search(code, cur+1, back)
         
         return -1
-            
-raise DCE_ERROR(1301)
+
+
+try:   
+    raise DCE_ERROR(1301)
+except BaseException as ex:
+    print(traceback.format_exception_only(ex)[0][:-1])
+
 
 #look at exception group?
 
