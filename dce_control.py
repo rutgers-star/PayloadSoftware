@@ -6,13 +6,12 @@ A module written to generate commands to control the Blue Canyon Technologies D.
 
 import serial
 from Logs.log import log
+from errors import DCE_ERROR
 
 __author__="Andrew Yu"
 __credits__=["Andrew Yu", "Simon Kowerski"]
 __creation_date__="2023"
 __version__="0.0.0"
-
-
 
 universal = {
     #                            | Address |  Length  |
@@ -69,13 +68,6 @@ def convert_from_hex(parameter_hex:str,conversion_factor=1.0):
         float: the integer representation of the hex expression +/- one conversion factor from the original
     """
 
-    #hex_arr=parameter_hex.split(" ")
-
-    #ret=0x0
-    #for x in hex_arr:
-    #    ret=ret<<8
-    #    ret+=int(x, 16)
-
     hex_arr=parameter_hex[2:]
     ret=int(parameter_hex, 16)
 
@@ -108,13 +100,11 @@ def set_wheel_torque(wheel_num:int,wheel_rate:float):
     
     # Ensures requested rate is within safe operating bounds
     if wheel_rate>21.4748 or wheel_rate<-21.4748:
-        log(1300, "- requested wheel torque is out of operational limits")
-        return None, False
+        raise DCE_ERROR(1300, "requested wheel torque is out of operational limits")
     
     # Ensures wheel selected properly
     if(wheel_num > 4 or wheel_num < 0):
-        log(1300, "- wheel selected improperly")
-        return None, False
+        raise DCE_ERROR(1300, "wheel selected improperly")
     
     #          |      Wheel 1      |      Wheel 2      |      Wheel 3      |      Wheel 4      |
     wheelSet = [0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00]
