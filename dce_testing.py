@@ -1,6 +1,16 @@
+#!/usr/bin/env python
+
+"""
+A module written to to test custom BCT DCE control code
+"""
+
 from Logs.log import log, open_experiment
 from dce_control import *
 from time import sleep
+
+__author__="Simon Kowerski"
+__credits__=["Simon Kowerski"]
+__creation_date__="8/8/2024"
 
 open_experiment(0)
 
@@ -37,13 +47,6 @@ while again:
         sleep(15)
 
         print(read_data(setting)[0])
-
-        sleep(5)
-        
-        print("Resetting wheels")
-
-        set_wheel_speed(0, 0)
-        set_wheel_torque(0, 0)
 
         sleep(15)
 

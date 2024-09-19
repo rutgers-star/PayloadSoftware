@@ -25,12 +25,6 @@ __author__="Mike Fogel"
 __credits__=["Mike Fogel"]
 __creation_date__="7/2/2023"
 
-__version__="1.0.0"
-__maintainer__="Mike Fogel"
-__email__="mikefogelny@gmail.com"
-__status__="Development"
-
-
 MAX_ITER=100        # Max number of allowed iterations to meet desired angle 
 MAX_ACCEL=10000     # Max acceleration in RPM/s of the maxon motor. SAFETY stop.
 MAX_VEL=3000        # Max RPM of the maxon motor. SAFETY stop. 3500 is allowable.

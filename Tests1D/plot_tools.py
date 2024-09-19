@@ -10,11 +10,6 @@ __author__="Mike Fogel"
 __credits__=["Mike Fogel"]
 __creation_date__="7/26/2023"
 
-__version__="1.0.0"
-__maintainer__="Mike Fogel"
-__email__="mikefogelny@gmail.com"
-__status__="Development"
-
 def plot_sloshy(t, theta, theta_d, u, umotor, max_accel, Omega, vel, acc, err, errdot, ecumul):  
     """
     Uses MatPlotLib to generate plots of collected the data

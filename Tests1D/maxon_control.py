@@ -10,12 +10,6 @@ __author__="Mike Fogel"
 __credits__=["Mike Fogel"]
 __creation_date__="8/1/2023"
 
-__version__="1.0.0"
-__maintainer__="Mike Fogel"
-__email__="mikefogelny@gmail.com"
-__status__="Development"
-
-
 def init_maxon(epos):
     """
     Closes connection to and disables the Maxon Motor

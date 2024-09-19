@@ -6,12 +6,11 @@ A module written to generate commands to control the Blue Canyon Technologies D.
 
 import serial
 from Logs.log import log
-from errors import DCE_ERROR
+from Logs.errors import ERROR
 
 __author__="Andrew Yu"
 __credits__=["Andrew Yu", "Simon Kowerski"]
 __creation_date__="2023"
-__version__="0.0.0"
 
 universal = {
     #                            | Address |  Length  |
@@ -100,11 +99,11 @@ def set_wheel_torque(wheel_num:int,wheel_rate:float):
     
     # Ensures requested rate is within safe operating bounds
     if wheel_rate>21.4748 or wheel_rate<-21.4748:
-        raise DCE_ERROR(1300, "requested wheel torque is out of operational limits")
+        raise ERROR(1300, f"requested wheel torque is out of operational limits - {wheel_rate}")
     
     # Ensures wheel selected properly
     if(wheel_num > 4 or wheel_num < 0):
-        raise DCE_ERROR(1300, "wheel selected improperly")
+        raise ERROR(1300, f"wheel selected improperly - {wheel_num}")
     
     #          |      Wheel 1      |      Wheel 2      |      Wheel 3      |      Wheel 4      |
     wheelSet = [0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00]
@@ -160,13 +159,11 @@ def set_wheel_speed(wheel_num:int,wheel_rate:float):
 
     # Ensures requested rate is within safe operating bounds
     if wheel_rate>6553.4 or wheel_rate<-6553.4:
-        log(1301, "- requested wheel rate is out of operational limits")
-        return None, False
+        raise ERROR(1301, f"requested wheel rate is out of operational limits - {wheel_rate}")
     
     # Ensures wheel is requested properly
     if(wheel_num > 4 or wheel_num < 0):
-        log(1301, "- wheel selected incorrectly")
-        return None, False
+        raise ERROR(1301, f"wheel selected incorrectly - {wheel_num}")
     
     #          | Wheel 1 | Wheel 2 | Wheel 3 | Wheel 4 |
     wheelSet = [0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00]
@@ -214,7 +211,7 @@ def read_data(read_type:str):
     # Ensures user is requesting either speed or torque data from the DCE
     read_type = read_type.upper()
     if(read_type != "SPEED" and read_type != "TORQUE"):
-        log(1302, "- data type not recognized")
+        raise ERROR(1302, "data type not recognized")
         return None, None, None, False
 
     command.extend(universal[f"{read_type}_ADDR"]) # add the address AND length read
@@ -225,11 +222,7 @@ def read_data(read_type:str):
         ret_command += command[i] + " "
     ret_command=ret_command[:-1]
 
-    send_success=_send_command(ret_command)
-
-    # stop if sending command to the DCE fails, logged in send function
-    if not send_success:
-        return None, None, ret_command, False
+    send_success=_send_command(ret_command)   
 
     actual = ''
 
@@ -238,16 +231,14 @@ def read_data(read_type:str):
         serial_port=serial.Serial("/dev/ttyS0", baudrate=9600)
 
     except Exception:
-        log(1304, f"- failed to open serial port /dev/ttyS0 - read - {ret_command}")
-        return None, None, ret_command, False
+        raise ERROR(1304, f"failed to open serial port /dev/ttyS0 - read - {ret_command}")
 
     # attempt to read from serial port
     try:
         actual=serial_port.read((6 + universal[f"{read_type}_ADDR"][3] + 1)*8) # how many bits to be read from the serial port (6 hex values for the header, DATA, 1 hex value for CRC8)
 
     except Exception:
-        log(1304, f"- failed to read from serial port /dev/ttyS0 - {ret_command}")
-        return None, None, ret_command, False
+        raise ERROR(1304, f"failed to read from serial port /dev/ttyS0 - {ret_command}")
     
     log(304, f"- {ret_command}")
 
@@ -273,8 +264,7 @@ def read_data(read_type:str):
             wheel+=1
     
     if not _verify_output(actual):  
-        log(1305)
-        return wheel_set, actual, ret_command, False
+        raise ERROR(1305, f"data recieved: {actual}")
         
     return wheel_set, actual, ret_command, True
 
@@ -314,23 +304,33 @@ def _send_command(hex_code:str):
         bool: True if successfully sent, false if an error occurs
     """
 
+    # attempt to open serial connection
     try:
-        serial_port = serial.Serial("/dev/ttyS0", baudrate=9600)
+        serialPort = serial("/dev/ttyS0",115200)
 
     except Exception:
-        log(1303, f"- failed to open serial port /dev/ttyS0 - {hex_code}")
+        raise ERROR(1303, f"failed to open serial port /dev/ttyS0 - {hex_code}")
         return False
+    
+    # make packet to send hex values to serial port
+    packet = bytearray()
+    arr = hex_code.split(" ")
+    for item in arr:
+        packet.append(int(item, 16))
 
+    # write packet to the serial port
     try:
-        serial_port.write(str.encode(hex_code)) #TODO: make this send in hex?
+        serialPort.write(packet)
 
     except Exception:
-        log(1303, f"- failed to write to serial port /dev/ttyS0 - {hex_code}")
+        raise ERROR(1303, f"- failed to write to serial port /dev/ttyS0 - {hex_code}")
         return False
     
     log(303, f"- {hex_code}")
     return True
 
+
+set_wheel_speed(1, 122222)
 '''
 #input 1 selects the wheel input 2 sets the torque
 #torque is limited to -21.4748 to 21.4748 Nm as specified by BCT documentation

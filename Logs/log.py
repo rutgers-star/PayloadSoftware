@@ -5,7 +5,7 @@ A module used to handle the recording of operating logs
 00-error-codes.txt and 01-event-codes.txt contain the messages that are sent to the .log files
 
 Atributes:
-    __path (str): Path to log files
+    __gPath (str): Path to log files
 """
 
 import os, time, re
@@ -15,12 +15,7 @@ __author__ = "Simon Kowerski"
 __credits__ = ["Simon Kowerski"]
 __creation_date__="1/22/2024"
 
-__version__ = "1.0.0"
-__maintainer__ = "Simon Kowerski"
-__email__ = "kowerski8@gmail.com"
-__status__ = "Release"
-
-__path = "Logs/"
+__gPath = "Logs/"
 
 def log(code:str, extra=''):
     """
@@ -31,29 +26,28 @@ def log(code:str, extra=''):
         code (int): the error or event being logged
         extra (str): Optional, any additional details to be included in the log
     """
-    filename = f"{__path}{str(date.today())}.log"
+    filename = f"{__gPath}{str(date.today())}.log"
     
     # accesses the most recent log file
-    files=os.listdir(__path)
+    files=os.listdir(__gPath)
     logs=[]
     for file in files:
         if re.match("(.*)(\.)(log)", file):
             logs.append(file)
     file = logs[-1:][0]
-    file = open(f'{__path}{file}', "a+")
+    file = open(f'{__gPath}{file}', "a+")
     
     # writes the correct code to the file
-    if code < 1000:
-        codemsg = open(f"{__path}00-event-codes.txt", "r")
-        message = f"    {codemsg.readlines()[code]}"
+    if type(code) == int:
+        codemsg = open(f"{__gPath}00-event-codes.txt", "r")
+        message = f"    {codemsg.readlines()[code]}"[:-1]
     else:
-        codemsg = open(f"{__path}01-error-codes.txt", "r")
-        message = f"ERR {codemsg.readlines()[code-1000]}"
+        message = f"ERR {code}"
 
     t = time.localtime()
     current_time = time.strftime("%H:%M:%S", t)
 
-    file.write(f'{current_time} {message[:-1]} {extra}\n')
+    file.write(f'{current_time} {message} {extra}\n')
     file.close()
 
 def open_experiment(experiment_num:int):
@@ -71,13 +65,13 @@ def open_experiment(experiment_num:int):
     current_time = time.strftime("%H:%M:%S", time.localtime())
     current_date = str(date.today())
 
-    files=os.listdir(__path)
+    files=os.listdir(__gPath)
     logs=[]
     for file in files:
         if re.match(f"{current_date}_Exp-[0-9]+\.log", file):
             logs.append(file)
 
-    filename = f"{__path}{current_date}_Exp-{len(logs)+1}.log"
+    filename = f"{__gPath}{current_date}_Exp-{len(logs)+1}.log"
     file = open(filename, "w")
 
     file.close()

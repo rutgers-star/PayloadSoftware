@@ -38,15 +38,10 @@ Actions logged with this method will include a timestamp.
 ## Payload Software Documentation 
 
 - [Payload Software Standards](https://docs.google.com/document/d/1vicnkUB_dqbaCpopz8N8pzhCTJqari4AZ5WBYJJv5HY/edit#heading=h.yexhmihjoetb)
-- [Payload Software Specifications](https://docs.google.com/document/d/1LpYGc71wTcKrt5TmQpS8grCHC3RCom-TDyZihmUt6Bg/edit#heading=h.tvzqshglh107)
 - [Payload Software Flowchart](https://drive.google.com/file/d/1rOezNYC_cjR_Z52rbMSgPSSvkrbp2D6H/view?usp=sharing)
 
 ## Authors
 
 - [@simon-kowerski](https://github.com/simon-kowerski)
 
-
-## Maintainers 
-
-- Simon Kowerski | kowerski8@gmail.com
 
