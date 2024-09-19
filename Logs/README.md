@@ -5,35 +5,39 @@ This package is meant to facilitate the easy logging of all events and errors th
 This package is run by the log.py module. The commands supplied by this module can be imported using:
 
 ```python
-from Logs.log import log, open_experiment
+from Logs.log import log
 ```
-
-### Opening an Experiment
-The open experiment method may not be required by the module you are writing. It is to be included and called within the control loop at the start of each experiment.
-
-```python
-open_experiment(experiment_num:int)
-```
-
-When called, this method will create a log file for the experiment you are running. Log files will be named YYYY-MM-DD_Exp-#.log where the # is a count of the number of experiments run that day.
-For example:
-- The first experiment run on 4/12/2024 will be called 2024-4-12_Exp-1.log 
-- The fourth experiment run on 4/12/2024 will be called 2024-4-12_Exp-4.log 
-
-The experiment number passed to this method will indicate which experiment from the experiment table is being run. This number will be include in the header of the log file, and is different than the number in the file name.
-
-Every time a new event is logged, it will be recorded in the most recent log file. **Opening the log at the start of each experiment is imperative.**
 
 ### Logging Events
 All events and errors must be logged in accordance to the guidelines provided in the [Payload Software Standards](https://docs.google.com/document/d/1vicnkUB_dqbaCpopz8N8pzhCTJqari4AZ5WBYJJv5HY/edit#heading=h.yexhmihjoetb). This can be done with the log module's built in command:
 
 ```python
-log(code:str, extra='')
+log(code:int|str, extra='')
 ```
 
-The code passed should match the event happening as noted in the [Payload Software Specifications](https://docs.google.com/document/d/1LpYGc71wTcKrt5TmQpS8grCHC3RCom-TDyZihmUt6Bg/edit#heading=h.tvzqshglh107). The code itself and a description of the event should be included in the codes.txt file. If you wish to include information other than what is already provided (ex. the error message if an error occurs) you have the ability to do so using the optional `extra` parameter. 
+The code itself and a description of the event must be included in the 00-event-codes.txt file. See [Payload Software Standards](https://docs.google.com/document/d/1vicnkUB_dqbaCpopz8N8pzhCTJqari4AZ5WBYJJv5HY/edit#heading=h.yexhmihjoetb) for more information, including formatting. When you invoke this method for an event pass an integer to the code parameter. Errors are passed as strings. 
 
-Actions logged with this method will include a timestamp. 
+If you wish to include information other than what is already provided (ex. the error message if an error occurs) you have the ability to do so using the optional `extra` parameter. 
+
+Actions logged with this method will include a timestamp in the current days log file. The first time you log an action on any given day, a new file will be created for that day. 
+
+## Logging Errors
+
+All errors for this project should be raised as custom exceptions using the `errors.py` module included in this directory. This can be imported using:
+
+```python
+from Logs.errors import ERROR
+```
+
+With this you can envoke the built in errors by raising it as a custom exception. 
+using:
+
+```python
+raise ERROR(code:int, context='')
+```
+The code is a 4 digit integer which stores the error code you are trying to invoke, and the context functions the same way as the log module's 'extra' .
+
+When you are envoking a custom error, make sure the code your are requesting is found in the appropriate array at the top of the errors module. When you are envoking a custom error, make sure the code your are requesting is found in the appropriate array at the top of the errors module. See [Payload Software Standards](https://docs.google.com/document/d/1vicnkUB_dqbaCpopz8N8pzhCTJqari4AZ5WBYJJv5HY/edit#heading=h.yexhmihjoetb) for more information including how these arrays are assigned.
 
 ## Payload Software Documentation 
 
