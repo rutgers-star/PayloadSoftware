@@ -291,8 +291,6 @@ def _verify_output(input_data:str):
     
     return hex(crc)[2:].upper() == input_data[-2:].upper()
 
-#FIXME: Does it work...?
-#TODO: Have it format the string correctly
 def _send_command(hex_code:str):
     """
     Sends a command to the DCE to be executed
@@ -330,7 +328,6 @@ def _send_command(hex_code:str):
     return True
 
 
-set_wheel_speed(1, 122222)
 '''
 #input 1 selects the wheel input 2 sets the torque
 #torque is limited to -21.4748 to 21.4748 Nm as specified by BCT documentation

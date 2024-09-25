@@ -2,7 +2,7 @@ from Logs.log import log
 
 class ERROR(BaseException):
     __EXP_codes = [     # 10XX
-        "0000 - Unknown error occured",
+        "0000 - Unknown error occured"
     ]
 
     __COMM_codes = [    # 11XX
@@ -16,10 +16,11 @@ class ERROR(BaseException):
         "1303 - Failed to send command to DCE",
         "1304 - Failed to recieve data from DCE",
         "1305 - Recieved incorrect data from DCE",
+        "1350 - Failed to initalize IMU" 
     ]
 
     __SNSR_codes = [    # 14XX
-
+        "1400 - Failed to start camera"
     ]
 
     def __init__(self, code, context=""):

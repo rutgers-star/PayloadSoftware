@@ -1,6 +1,6 @@
-0000 - 
-0001 - 
-0002 - 
+0000 - Experiment start
+0001 - Experiment end
+0002 - Known error occurred - experiment safely terminated early
 0003 - 
 0004 - 
 0005 - 
@@ -348,9 +348,9 @@
 0347 - 
 0348 - 
 0349 - 
-0350 - 
-0351 - 
-0352 - 
+0350 - Initializing IMU Connection
+0351 - Reading IMU Data
+0352 - IMU Settled 
 0353 - 
 0354 - 
 0355 - 
@@ -398,10 +398,10 @@
 0397 - 
 0398 - 
 0399 - 
-0400 - 
-0401 - 
-0402 - 
-0403 - 
+0400 - Starting Camera
+0401 - Camera Started
+0402 - Closing Camera
+0403 - Camera Closed
 0404 - 
 0405 - 
 0406 - 
