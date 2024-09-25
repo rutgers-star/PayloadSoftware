@@ -40,6 +40,7 @@ def end_experiment():
     return
 
 ########### INITIAL VALUE CALCULATIONS START ###########
+log(0)
 # FIXME: Will need to redo for BCT Wheel?
 # Reaction wheel Moment of Inertia
 Jx=2.491E-4 # kg m^2
