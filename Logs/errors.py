@@ -25,7 +25,6 @@ class ERROR(BaseException):
 
     def __init__(self, code, context=""):
         type=(int)(code/100)%10
-        print(type)
         match type:
             case 0:
                 codes=self.__EXP_codes
@@ -38,7 +37,6 @@ class ERROR(BaseException):
             case _:
                 codes=self.__EXP_codes
                 code=0
-        print(codes)
         str=f"{self.__binary_search(code, codes)}"
         log(str, f"- {context}")
         super().__init__(str)
