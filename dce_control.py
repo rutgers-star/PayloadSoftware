@@ -81,7 +81,7 @@ def set_wheel_torque(wheel_num:int,wheel_rate:float):
     """
     Generates and sends a code to the DCE to set the torque on one or all of the reaction wheels.
         Accepts a wheel number between 0 and 4 (inclusive), where 0 selects all 4 wheels
-        Accepts a torque between -21.4748 and +21.4748 (exclusive)
+        Accepts a torque between -21.4748 and +21.4748 (Nm) (exclusive)
 
     Args:
         wheel_num (int): The wheel to be selected 
@@ -89,7 +89,6 @@ def set_wheel_torque(wheel_num:int,wheel_rate:float):
     
     Returns:
         str: The command formatted and ready to send to the DCE
-        bool: True if successful, false if an error occured
     """
     log(300)
     command = universal["WRITE_HEADER"].copy()  # add the write header
@@ -134,14 +133,16 @@ def set_wheel_torque(wheel_num:int,wheel_rate:float):
         command[i] = '0x{:02X}'.format(command[i])
         ret += command[i] + " "
 
-    return ret[:-1], _send_command(ret)
+    ret=ret[:-1]
+    _send_command(ret)
+    return ret
 
 #FIXME: When writing to one wheel, read from DCE to fill in missing values
 def set_wheel_speed(wheel_num:int,wheel_rate:float):
     """
     Generates and sends a code to the DCE to set the speed of one or all of the reaction wheels.
         Accepts a wheel number between 0 and 4 (inclusive), where 0 selects all 4 wheels
-        Accepts a torque between -6553.4 and +6553.4 (exclusive)
+        Accepts a speed in RPM between -6553.4 and +6553.4 (RPM) (exclusive)
 
     Args:
         wheel_num (int): The wheel to be selected 
@@ -149,7 +150,6 @@ def set_wheel_speed(wheel_num:int,wheel_rate:float):
     
     Returns:
         str: The command formatted and ready to send to the DCE
-        bool: True if successful, false if an error occured
     """
     log(301)
     command = universal["WRITE_HEADER"].copy()  # add the write header
@@ -190,7 +190,9 @@ def set_wheel_speed(wheel_num:int,wheel_rate:float):
         command[i] = '0x{:02X}'.format(command[i])
         ret += command[i] + " "
 
-    return ret[:-1], _send_command(ret)
+    ret=ret[:-1]
+    _send_command(ret)
+    return ret
 
 def read_data(read_type:str):
     """
@@ -200,10 +202,9 @@ def read_data(read_type:str):
         read_type (str): Type of data to be read. MUST be either 'SPEED' or 'TORQUE'
     
     Returns:
-        int[]: the speed or torque values
+        int[]: the speed or torque values collected
         str: the exact data collected from the DCE
         str: The command formatted and ready to send to the DCE
-        bool: True if successful, false if an error occured
     """
     log(302)
     command = universal["READ_HEADER"].copy() # add the read header
@@ -222,20 +223,20 @@ def read_data(read_type:str):
         ret_command += command[i] + " "
     ret_command=ret_command[:-1]
 
-    send_success=_send_command(ret_command)   
+    _send_command(ret_command)   
 
     actual = ''
 
     # attempt to open serial port
     try:
-        serial_port=serial.Serial("/dev/ttyS0", baudrate=9600)
+        serial_port=serial.Serial("/dev/ttyS0", baudrate=115200)
 
     except Exception:
         raise ERROR(1304, f"failed to open serial port /dev/ttyS0 - read - {ret_command}")
 
     # attempt to read from serial port
     try:
-        actual=serial_port.read((6 + universal[f"{read_type}_ADDR"][3] + 1)*8) # how many bits to be read from the serial port (6 hex values for the header, DATA, 1 hex value for CRC8)
+        actual=serial_port.read((6 + universal[f"{read_type}_ADDR"][3] + 1)) # how many bytes to be read from the serial port (6 hex values for the header, DATA, 1 hex value for CRC8)
 
     except Exception:
         raise ERROR(1304, f"failed to read from serial port /dev/ttyS0 - {ret_command}")
@@ -266,7 +267,7 @@ def read_data(read_type:str):
     if not _verify_output(actual):  
         raise ERROR(1305, f"data recieved: {actual}")
         
-    return wheel_set, actual, ret_command, True
+    return wheel_set, actual, ret_command
 
 def _verify_output(input_data:str):
     """
@@ -297,18 +298,14 @@ def _send_command(hex_code:str):
     
     Args:
         hex_code (str): A string containing the entire command to be sent to the DCE formatted 0xAB 0xCD 0xEF ....
-
-    Returns
-        bool: True if successfully sent, false if an error occurs
     """
 
     # attempt to open serial connection
     try:
-        serialPort = serial("/dev/ttyS0",115200)
+        serialPort = serial.Serial("/dev/ttyS0",115200)
 
     except Exception:
         raise ERROR(1303, f"failed to open serial port /dev/ttyS0 - {hex_code}")
-        return False
     
     # make packet to send hex values to serial port
     packet = bytearray()
@@ -321,12 +318,12 @@ def _send_command(hex_code:str):
         serialPort.write(packet)
 
     except Exception:
-        raise ERROR(1303, f"- failed to write to serial port /dev/ttyS0 - {hex_code}")
-        return False
+        raise ERROR(1303, f"failed to write to serial port /dev/ttyS0 - {hex_code}")
     
     log(303, f"- {hex_code}")
-    return True
 
+#read_data('SPEED')
+#set_wheel_speed(1,1)
 
 '''
 #input 1 selects the wheel input 2 sets the torque
