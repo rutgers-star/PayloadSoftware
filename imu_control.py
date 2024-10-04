@@ -107,11 +107,8 @@ def imu_data(imu, yaw0, yawOld):
         yaw0 (int): the first yaw value stored
         yawOld (int): the previous yaw value stored
 
-     Returns
-        yawNew (int)
-        pitchNew (int)
-        rollNew (int)
-        ^self explanatory
+    Returns:
+        int[]: yawNew, pitchNew, rollNew - self explanatory
     """
     log(351)
     data=imu.readline()

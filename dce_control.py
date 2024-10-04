@@ -322,7 +322,7 @@ def _send_command(hex_code:str):
     
     log(303, f"- {hex_code}")
 
-#read_data('SPEED')
+read_data('SPEED')
 #set_wheel_speed(1,1)
 
 '''
