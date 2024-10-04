@@ -20,13 +20,14 @@ import matplotlib.pyplot as plt
 from imu_control import init_imu, imu_data
 from control import PID_control
 from plot_tools import plot_sloshy
+from dce_control import set_wheel_torque, set_wheel_speed
 
 from Logs.log import log
 from Logs.errors import ERROR
 
 
 __author__="Mike Fogel"
-__credits__=["Mike Fogel"]
+__credits__=["Mike Fogel, Simon Kowerski, Serene Siu"]
 __creation_date__="7/2/2023"
 
 #TODO: SIMON update these numbers to match BCT Wheel
@@ -34,10 +35,32 @@ MAX_ITER=100        # Max number of allowed iterations to meet desired angle
 MAX_ACCEL=10000     # Max acceleration in RPM/s of the maxon motor. SAFETY stop.
 MAX_VEL=3000        # Max RPM of the maxon motor. SAFETY stop. 3500 is allowable.
 
-#TODO: define these procedures - take code from below main control loop end and put it here - call this after main control loop end
-def end_experiment():
-    #should either log 0001 for experiment end or 0002 for early end due to error - can take a parameter to determine this
-    return
+#TODO: SIMON have it end the running program
+def end_experiment(error=False):
+    """
+    Ends the current experiment and make sure everything thing is return to its initial state
+
+    Args:
+    error (bool): True if error occured, False (default) if not
+
+    """
+    log(1402, "- output file: sloshing.h264")
+    camlog.close()
+    log(1403)
+
+    set_wheel_speed(1,0)
+
+    print("Plotting")    
+    plot_sloshy(t, theta, theta_d, u, umotor, MAX_ACCEL, err, errdot, ecumul)
+    plt.show()
+
+    if error:
+        log(2)
+        
+    else:
+        log(1)
+
+    exit(not error)
 
 ########### INITIAL VALUE CALCULATIONS START ###########
 log(0)
@@ -103,22 +126,24 @@ tstart=time.time()
 ########### MOTOR STARTUP CODE END ###########
 
 ########### IMU STARTUP CODE BEGIN ###########
-#TODO: Error handling
-yaw0,imu=init_imu()
-yawOld=0
-print('Yaw0:',yaw0)
+try:
+    yaw0,imu=init_imu()
+    yawOld=0
+    #print('Yaw0:',yaw0)
+except Exception:
+    end_experiment(True)
 ########### IMU STARTUP CODE END ###########
 
 ########### CAMERA STARTUP CODE BEGIN ###########
 log(400)
 
+#TODO: camera control module for proper error stuff
 try:
     camlog=open("camlog.txt",'w')
     cam=subprocess.Popen(["/usr/local/bin/libcamera-vid", "-t 20000", "--nopreview", "--width", "960", "--height","540","--vflip","--saturation","0","--save-pts","camtimes.txt","--exposure","long","--framerate","24","-o","sloshing.h264"], text=True, stderr=camlog)
 
 except Exception:
     end_experiment()
-    raise ERROR(1400)
 
 log(401)
 ########### CAMERA STARTUP CODE END ###########
@@ -148,12 +173,12 @@ while (k < MAX_ITER):
     velocity=np.sign(u[k])*MAX_VEL
 
     #Drive the Motor
-    #TODO: Replace line below with code from DCE Control - use set_torque - u[k] is torque you want to set to wheel 1
-    Omega[k] = MotionInVelocity(keyhandle, NodeID, epos, velocity, acceleration)
+    try:
+        set_wheel_torque(1, u[k])
+    except Exception:
+        end_experiment()
+    #TODO: Update this for new motor
     time.sleep(0.025) # Good as of 11/5/2023 10:51 am
-    
-    #print("%5.0i    %4.3f %10.2f %10.2f %10.2f %10.2f %10.2f %10.2f " % (k,t[k], theta[k], err[k], errdot[k], ecumul[k], umotor[k], u[k]))
-
 
     if (k > 10): 
         meantheta=np.mean(theta[k-10:k])
@@ -163,12 +188,4 @@ while (k < MAX_ITER):
 
 ########### MAIN CONTROL LOOP END ###########
 
-#TODO: Ensure set wheel speed to 0
-
-log(1402, "- output file: sloshing.h264")
-camlog.close()
-log(1403)
-
-print("Plotting")    
-plot_sloshy(t, theta, theta_d, u, umotor, MAX_ACCEL, err, errdot, ecumul)
-plt.show()
+end_experiment()
