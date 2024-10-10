@@ -2,33 +2,74 @@
 
 """
 A module written to generate commands to control the Blue Canyon Technologies D.C.E. and execute the commands on the device. 
+
+Atributes:
+    universal - an array to store commonly used values such as DCE memory addresses
+    serial_port - an object which stores an opened connection to the serial port
 """
 
 import serial
 from Logs.log import log
 from Logs.errors import ERROR
+from time import sleep
+from decimal import *
 
 __author__="Andrew Yu"
 __credits__=["Andrew Yu", "Simon Kowerski"]
 __creation_date__="2023"
 
-universal = {
+serial_port=None
+
+universal={
     #                            | Address |  Length  |
     "WRITE_HEADER":         [0xEB],
     "READ_HEADER":          [0xED],
 
     # Address where information is stored
     "WRITE_ADDR":           [0X00,0x00],
+    #TODO: Make these speed measure not speed command
     #                       | Address |  Length  |
-    "SPEED_ADDR":           [0x04,0x79, 0x00, 0x08], 
+    "SPEED_ADDR":           [0x04,0x69, 0x00, 0x10], 
     "TORQUE_ADDR":          [0x04,0x89, 0x00, 0x10],
 
+    # Conversion factors for WRITE information 
+    "SPEED_WRITE_CONV":           [0.2], 
+    "TORQUE_WRITE_CONV":          [1e-8],
+
     # Conversion factors for READ information 
-    "SPEED_CONV":           [0.2], 
-    "TORQUE_CONV":          [0.00000001]
+    "SPEED_READ_CONV":           [0.002], 
+    "TORQUE_READ_CONV":          [1e-8]
 }
 
-def convert_to_hex(wheel_rate,length,conversion_factor=1.0): 
+def startup():
+    """
+    Opens the serial connection and reads from the HR_RUN_COUNT register to ensure that the DCE is running
+    """
+
+    if(serial_port):
+        return
+
+    # opens serial Connection
+    try:
+        serial_port=serial.Serial("/dev/ttyS0", 115200, timeout=1)
+    except Exception:
+        raise ERROR(1310)
+    
+    sleep(.2)
+
+    #TODO: Finish This
+    # attempts to read from HR_RUN_COUNT
+    try:
+        _send_command("0xec 0x04 0xfe 0x00 0x04")
+        val = serial_port.read(4)
+           
+    except Exception:
+        raise ERROR(1311)
+    
+    log(310)
+
+#FIXME Probably needs more percision for the torque things
+def convert_to_hex(wheel_rate,length, conversion_factor=1.0): 
     """
     Converts a wheel_rate into its corresponding hex value
 
@@ -50,34 +91,34 @@ def convert_to_hex(wheel_rate,length,conversion_factor=1.0):
     for i in range(length - len(parameter_hex)):
         parameter_hex='0'+parameter_hex
 
-    #if len(parameter_hex)%2 != 0:
-    #    parameter_hex = '0'+parameter_hex
-
     return parameter_hex
 
-def convert_from_hex(parameter_hex:str,conversion_factor=1.0): 
+#FIXME Probably needs more percision for the torque things
+def convert_from_hex(parameter_hex:str, conversion_factor=1.0): 
     """
     Converts a hex value read from the DCE to the corresponding integer value
 
     Args:
-        parameter_hex (str): a hex value formatted like 0xc0ffee which obeys two's complement
+        parameter_hex (str): a hex value formatted like 0xc0ffee OR c0ffee which obeys two's complement
         conversion_factor (float): EU conversion factor as specified on the DCE command table 
     
     Ret:
         float: the integer representation of the hex expression +/- one conversion factor from the original
     """
 
-    hex_arr=parameter_hex[2:]
     ret=int(parameter_hex, 16)
+    twos=int(parameter_hex[0], 16)
 
     # obey twos compliment
-    if len(format(ret,"b"))%4==0:
+    if len(format(twos,"b"))%4==0:
+        print("here")
         ret=ret-(1 << len(format(ret,"b")))
 
     return ret * conversion_factor
 
 #FIXME: When writing to one wheel, read from DCE to fill in missing values
-def set_wheel_torque(wheel_num:int,wheel_rate:float):
+#FIXME: REPLACE SATURATION VALUES
+def set_wheel_torque(wheel_num:int, wheel_rate:float):
     """
     Generates and sends a code to the DCE to set the torque on one or all of the reaction wheels.
         Accepts a wheel number between 0 and 4 (inclusive), where 0 selects all 4 wheels
@@ -108,7 +149,7 @@ def set_wheel_torque(wheel_num:int,wheel_rate:float):
     wheelSet = [0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00]
     
     # preforms the EU conversion and and formats it into hex
-    parameter_hex = convert_to_hex(wheel_rate,8,universal["TORQUE_CONV"][0])
+    parameter_hex = convert_to_hex(wheel_rate,8,universal["TORQUE_WRITE_CONV"][0])
         
     # sets the speed for the correct wheel
     if(wheel_num == 0): # if wheel_num is zero it sets for all 4
@@ -138,7 +179,8 @@ def set_wheel_torque(wheel_num:int,wheel_rate:float):
     return ret
 
 #FIXME: When writing to one wheel, read from DCE to fill in missing values
-def set_wheel_speed(wheel_num:int,wheel_rate:float):
+#FIXME: REPLACE SATURATION VALUES
+def set_wheel_speed(wheel_num:int, wheel_rate:float):
     """
     Generates and sends a code to the DCE to set the speed of one or all of the reaction wheels.
         Accepts a wheel number between 0 and 4 (inclusive), where 0 selects all 4 wheels
@@ -169,7 +211,7 @@ def set_wheel_speed(wheel_num:int,wheel_rate:float):
     wheelSet = [0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00]
     
     # preforms the EU conversion and and formats the rate into hex
-    parameter_hex = convert_to_hex(wheel_rate, 4, universal["SPEED_CONV"][0])
+    parameter_hex = convert_to_hex(wheel_rate, 4, universal["SPEED_WRITE_CONV"][0])
 
     # sets the speed for the correct wheel
     if(wheel_num == 0): # if wheel_num is zero it sets for all 4
@@ -213,7 +255,6 @@ def read_data(read_type:str):
     read_type = read_type.upper()
     if(read_type != "SPEED" and read_type != "TORQUE"):
         raise ERROR(1302, "data type not recognized")
-        return None, None, None, False
 
     command.extend(universal[f"{read_type}_ADDR"]) # add the address AND length read
     
@@ -223,51 +264,36 @@ def read_data(read_type:str):
         ret_command += command[i] + " "
     ret_command=ret_command[:-1]
 
-    _send_command(ret_command)   
+    _send_command(ret_command)        
 
-    actual = ''
-
-    # attempt to open serial port
-    try:
-        serial_port=serial.Serial("/dev/ttyS0", baudrate=115200)
-
-    except Exception:
-        raise ERROR(1304, f"failed to open serial port /dev/ttyS0 - read - {ret_command}")
+    actual=0
 
     # attempt to read from serial port
+    read_length=6+16+1
     try:
-        actual=serial_port.read((6 + universal[f"{read_type}_ADDR"][3] + 1)) # how many bytes to be read from the serial port (6 hex values for the header, DATA, 1 hex value for CRC8)
+        actual=serial_port.read(read_length) # how many bytes to be read from the serial port (6 hex values for the header, DATA, 1 hex value for CRC8)
 
     except Exception:
-        raise ERROR(1304, f"failed to read from serial port /dev/ttyS0 - {ret_command}")
+        raise ERROR(1304, f"failed to read from serial port - {ret_command}")
     
-    log(304, f"- {ret_command}")
+    # verify the correct output is recieved
+    if(len(actual) != read_length):
+        raise ERROR(1305, f"did not recieve the correct number of bytes - Requested: {read_length} - Recieved: {len(actual)} - {ret_command}")
 
-    length=universal[f"{read_type}_ADDR"][3]/4
+    actual=bytes.hex(actual)
 
-    # Potential spot for error to occur
-    # Assumes data collected to be a set of ones and zeros, converts accordingly
-    actual=hex(int(actual, 2))[2:]
-    dce_header=actual[0:11]
-    dce_data=actual[12:-2]
-    dce_crc8=actual[-2:]
+    if(not _verify_output(f'0x{actual}')):
+        raise ERROR(1305)
 
-    wheel_set=["","","",""]
-    wheel=0
-    data_point=0
-
-    for item in dce_data:
-        wheel_set[wheel]+=item
-        data_point+=1
-        if data_point==length*2:
-            wheel_set[wheel]=convert_from_hex(wheel_set[wheel], universal[f"{read_type}_CONV"][0])
-            data_point=0
-            wheel+=1
+    # TODO:
+    # perform conversions on actual
+    wheel_arr = [actual[12:20], actual[20:28], actual[28:36], actual[36:44]]
+    for i in len(wheel_arr):
+        wheel_arr[i] = convert_from_hex(wheel_arr[i], universal[f"{read_type}_READ_CONV"][0])
     
-    if not _verify_output(actual):  
-        raise ERROR(1305, f"data recieved: {actual}")
-        
-    return wheel_set, actual, ret_command
+    log(304, f"- Output: {actual}")
+
+    return wheel_arr, actual, ret_command
 
 def _verify_output(input_data:str):
     """
@@ -300,13 +326,10 @@ def _send_command(hex_code:str):
         hex_code (str): A string containing the entire command to be sent to the DCE formatted 0xAB 0xCD 0xEF ....
     """
 
-    # attempt to open serial connection
-    try:
-        serialPort = serial.Serial("/dev/ttyS0",115200)
+    # ensure serial connection is open
+    if(not serial_port):
+        raise ERROR(1303, f"serial port not open")
 
-    except Exception:
-        raise ERROR(1303, f"failed to open serial port /dev/ttyS0 - {hex_code}")
-    
     # make packet to send hex values to serial port
     packet = bytearray()
     arr = hex_code.split(" ")
@@ -315,16 +338,17 @@ def _send_command(hex_code:str):
 
     # write packet to the serial port
     try:
-        serialPort.write(packet)
+        serial_port.write(packet)
 
     except Exception:
-        raise ERROR(1303, f"failed to write to serial port /dev/ttyS0 - {hex_code}")
+        raise ERROR(1303, f"failed to write to serial port at /dev/ttyS0 - {hex_code}")
     
     log(303, f"- {hex_code}")
 
-read_data('SPEED')
+#read_data('SPEED')
 #set_wheel_speed(1,1)
-
+#val=convert_from_hex("0x002161d4", universal["SPEED_CONV"])
+#print(val)
 '''
 #input 1 selects the wheel input 2 sets the torque
 #torque is limited to -21.4748 to 21.4748 Nm as specified by BCT documentation

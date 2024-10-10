@@ -18,16 +18,17 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from imu_control import init_imu, imu_data
+from camera_control import init_camera, close_camera
 from control import PID_control
 from plot_tools import plot_sloshy
-from dce_control import set_wheel_torque, set_wheel_speed
+from dce_control import set_wheel_torque, set_wheel_speed, startup
 
 from Logs.log import log
 from Logs.errors import ERROR
 
 
 __author__="Mike Fogel"
-__credits__=["Mike Fogel, Simon Kowerski, Serene Siu"]
+__credits__=["Mike Fogel"]
 __creation_date__="7/2/2023"
 
 #TODO: SIMON update these numbers to match BCT Wheel
@@ -41,12 +42,10 @@ def end_experiment(error=False):
     Ends the current experiment and make sure everything thing is return to its initial state
 
     Args:
-    error (bool): True if error occured, False (default) if not
+    error (bool): true if error occured, false (default) if not
 
     """
-    log(1402, "- output file: sloshing.h264")
-    camlog.close()
-    log(1403)
+    close_camera()
 
     set_wheel_speed(1,0)
 
@@ -60,7 +59,7 @@ def end_experiment(error=False):
     else:
         log(1)
 
-    exit(not error)
+    exit()
 
 ########### INITIAL VALUE CALCULATIONS START ###########
 log(0)
@@ -121,7 +120,11 @@ tstart=time.time()
 
 ########### MOTOR STARTUP CODE BEGIN ###########
 
-#TODO: SIMON Run dce_control.is_active() to read from HR Run count, it throws an error if it doesn't work
+try:
+    startup()
+except Exception:
+    log(2)
+    exit()
 
 ########### MOTOR STARTUP CODE END ###########
 
@@ -135,17 +138,10 @@ except Exception:
 ########### IMU STARTUP CODE END ###########
 
 ########### CAMERA STARTUP CODE BEGIN ###########
-log(400)
-
-#TODO: camera control module for proper error stuff
 try:
-    camlog=open("camlog.txt",'w')
-    cam=subprocess.Popen(["/usr/local/bin/libcamera-vid", "-t 20000", "--nopreview", "--width", "960", "--height","540","--vflip","--saturation","0","--save-pts","camtimes.txt","--exposure","long","--framerate","24","-o","sloshing.h264"], text=True, stderr=camlog)
-
+    init_camera()
 except Exception:
-    end_experiment()
-
-log(401)
+    end_experiment(True)
 ########### CAMERA STARTUP CODE END ###########
 
 ########### MAIN CONTROL LOOP START ###########
@@ -177,7 +173,7 @@ while (k < MAX_ITER):
         set_wheel_torque(1, u[k])
     except Exception:
         end_experiment()
-    #TODO: Update this for new motor
+    #TODO: UPdate this for new motor
     time.sleep(0.025) # Good as of 11/5/2023 10:51 am
 
     if (k > 10): 
