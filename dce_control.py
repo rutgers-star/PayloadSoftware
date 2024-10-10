@@ -14,7 +14,7 @@ from Logs.errors import ERROR
 from time import sleep
 from decimal import *
 
-__author__="Andrew Yu"
+__author__="Simon Kowerski"
 __credits__=["Andrew Yu", "Simon Kowerski"]
 __creation_date__="2023"
 
@@ -44,6 +44,8 @@ universal={
 def startup():
     """
     Opens the serial connection and reads from the HR_RUN_COUNT register to ensure that the DCE is running
+    
+    Causes the thread to sleep for .6 seconds
     """
 
     if(serial_port):
@@ -55,18 +57,25 @@ def startup():
     except Exception:
         raise ERROR(1310)
     
-    sleep(.2)
+    log(310)
+    sleep(.6)
 
     #TODO: Finish This
     # attempts to read from HR_RUN_COUNT
+
+    _send_command("0xec 0x04 0xfe 0x00 0x04")
+
+
     try:
-        _send_command("0xec 0x04 0xfe 0x00 0x04")
         val = serial_port.read(4)
            
     except Exception:
-        raise ERROR(1311)
+        raise ERROR(1311, "failed to read from DCE")
     
-    log(310)
+    if(len(val) != 4):
+        raise ERROR(1311, "DCE failed to supply correct values from HR_RUN_COUNT")
+    
+    log(311)
 
 #FIXME Probably needs more percision for the torque things
 def convert_to_hex(wheel_rate,length, conversion_factor=1.0): 
@@ -249,12 +258,16 @@ def read_data(read_type:str):
         str: The command formatted and ready to send to the DCE
     """
     log(302)
+
+    # ensure serial connection is open
+    if(not serial_port):
+        raise ERROR(1302, f"serial port not open")
     command = universal["READ_HEADER"].copy() # add the read header
     
     # Ensures user is requesting either speed or torque data from the DCE
     read_type = read_type.upper()
     if(read_type != "SPEED" and read_type != "TORQUE"):
-        raise ERROR(1302, "data type not recognized")
+        raise ERROR(1302, f"data type {read_type} not recognized")
 
     command.extend(universal[f"{read_type}_ADDR"]) # add the address AND length read
     
@@ -278,7 +291,7 @@ def read_data(read_type:str):
     
     # verify the correct output is recieved
     if(len(actual) != read_length):
-        raise ERROR(1305, f"did not recieve the correct number of bytes - Requested: {read_length} - Recieved: {len(actual)} - {ret_command}")
+        raise ERROR(1305, f"did not recieve the correct number of bytes - Requested: {read_length} byes - Recieved: {len(actual)} btyes - {ret_command}")
 
     actual=bytes.hex(actual)
 
