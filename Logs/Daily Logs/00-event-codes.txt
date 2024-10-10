@@ -308,8 +308,8 @@
 0307 - 
 0308 - 
 0309 - 
-0310 - 
-0311 - 
+0310 - Successfully opened DCE serial connection
+0311 - Confirmed DCE Startup
 0312 - 
 0313 - 
 0314 - 

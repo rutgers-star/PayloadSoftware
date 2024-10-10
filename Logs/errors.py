@@ -16,6 +16,8 @@ class ERROR(BaseException):
         "1303 - Failed to send command to DCE",
         "1304 - Failed to recieve data from DCE",
         "1305 - Recieved incorrect data from DCE",
+        "1310 - Failed to open serial connection to DCE",
+        "1311 - Failed to confirm DCE startup" 
         "1350 - Failed to initalize IMU" 
     ]
 
@@ -48,7 +50,6 @@ class ERROR(BaseException):
 
         cur = int((front + back) / 2)
         current = int(codes[cur][:4])
-        print(current)
 
         if(front > back):
             return -1 
