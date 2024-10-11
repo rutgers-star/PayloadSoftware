@@ -28,7 +28,7 @@ from Logs.errors import ERROR
 
 
 __author__="Mike Fogel"
-__credits__=["Mike Fogel"]
+__credits__=["Mike Fogel", "Simon Kowerski", "Serene Siu"]
 __creation_date__="7/2/2023"
 
 #TODO: SIMON update these numbers to match BCT Wheel
@@ -173,7 +173,7 @@ while (k < MAX_ITER):
         set_wheel_torque(1, u[k])
     except Exception:
         end_experiment()
-    #TODO: UPdate this for new motor
+    #TODO: MIKE Update this for new motor
     time.sleep(0.025) # Good as of 11/5/2023 10:51 am
 
     if (k > 10): 

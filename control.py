@@ -1,13 +1,15 @@
-# -*- coding: utf-8 -*-
-#TODO: Format
-"""
-Created on Mon Aug 26 10:37:52 2024
+#!/usr/bin/env python
 
-@author: mfogel
+"""
+A module which contains definitions for control algroithms to drive a motor for the 1.D. tests of the SPICEsat
 """
 
 import math
 import numpy as np 
+
+author="Mike Fogel"
+credits=["Mike Fogel"]
+creation_date="2024"
 
 # function definition
 def PID_control(theta_d, k, t, dt, I, J, theta, vel, acc, err, errdot, ecumul):    
