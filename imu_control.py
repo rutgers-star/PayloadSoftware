@@ -14,7 +14,7 @@ from Logs.log import log
 from Logs.errors import ERROR 
 
 __author__="Mike Fogel"
-__credits__=["Mike Fogel"]
+__credits__=["Mike Fogel", "Simon Kowerski"]
 __creation_date__="7/25/2023"
 
 pi=math.pi

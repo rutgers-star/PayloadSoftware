@@ -38,7 +38,12 @@ def log(code:int|str, extra=''):
     # writes the correct code to the file
     if type(code) == int:
         codemsg = open(f"{__gPath}00-event-codes.txt", "r")
-        message = f"    {codemsg.readlines()[code]}"[:-1]
+        callout="   "
+        if code == 0:
+            callout = "NEW"
+        if code == 1 or code == 2:
+            callout = "STP"
+        message = f"{callout} {codemsg.readlines()[code]}"[:-1]
     else:
         message = f"ERR {code}"
 
