@@ -12,6 +12,8 @@ __author__="Andrew Yu"
 __credits__=["Andrew Yu", "Simon Kowerski"]
 __creation_date__="2023"
 
+#TODO: open serial port here
+
 universal = {
     #                            | Address |  Length  |
     "WRITE_HEADER":         [0xEB],
@@ -19,8 +21,9 @@ universal = {
 
     # Address where information is stored
     "WRITE_ADDR":           [0X00,0x00],
+    #TODO: Make these speed measure not speed command
     #                       | Address |  Length  |
-    "SPEED_ADDR":           [0x04,0x79, 0x00, 0x08], 
+    "SPEED_ADDR":           [0x04,0x69, 0x00, 0x10], 
     "TORQUE_ADDR":          [0x04,0x89, 0x00, 0x10],
 
     # Conversion factors for READ information 
@@ -74,7 +77,7 @@ def convert_from_hex(parameter_hex:str,conversion_factor=1.0):
     if len(format(ret,"b"))%4==0:
         ret=ret-(1 << len(format(ret,"b")))
 
-    return ret * conversion_factor
+    return ret * conversion_factor[0]
 
 #FIXME: When writing to one wheel, read from DCE to fill in missing values
 def set_wheel_torque(wheel_num:int,wheel_rate:float):
@@ -223,20 +226,34 @@ def read_data(read_type:str):
         ret_command += command[i] + " "
     ret_command=ret_command[:-1]
 
-    _send_command(ret_command)   
+    # attempt to open serial connection
+    hex_code=ret_command
+    try:
+        serial_port = serial.Serial("/dev/ttyS0",115200)
+
+    except Exception:
+        raise ERROR(1303, f"failed to open serial port /dev/ttyS0 - {hex_code}")
+    
+    # make packet to send hex values to serial port
+    packet = bytearray()
+    arr = hex_code.split(" ")
+    for item in arr:
+        packet.append(int(item, 16))
+
+    # write packet to the serial port
+    try:
+        serial_port.write(packet)
+
+    except Exception:
+        raise ERROR(1303, f"failed to write to serial port /dev/ttyS0 - {hex_code}")
+    
+    log(303, f"- {hex_code}")  
 
     actual = ''
 
-    # attempt to open serial port
-    try:
-        serial_port=serial.Serial("/dev/ttyS0", baudrate=115200)
-
-    except Exception:
-        raise ERROR(1304, f"failed to open serial port /dev/ttyS0 - read - {ret_command}")
-
     # attempt to read from serial port
     try:
-        actual=serial_port.read((6 + universal[f"{read_type}_ADDR"][3] + 1)) # how many bytes to be read from the serial port (6 hex values for the header, DATA, 1 hex value for CRC8)
+        actual=serial_port.read(6+16+1) # how many bytes to be read from the serial port (6 hex values for the header, DATA, 1 hex value for CRC8)
 
     except Exception:
         raise ERROR(1304, f"failed to read from serial port /dev/ttyS0 - {ret_command}")
@@ -245,6 +262,7 @@ def read_data(read_type:str):
 
     length=universal[f"{read_type}_ADDR"][3]/4
 
+    '''
     # Potential spot for error to occur
     # Assumes data collected to be a set of ones and zeros, converts accordingly
     actual=hex(int(actual, 2))[2:]
@@ -268,6 +286,8 @@ def read_data(read_type:str):
         raise ERROR(1305, f"data recieved: {actual}")
         
     return wheel_set, actual, ret_command
+    '''
+    return actual
 
 def _verify_output(input_data:str):
     """
@@ -302,7 +322,7 @@ def _send_command(hex_code:str):
 
     # attempt to open serial connection
     try:
-        serialPort = serial.Serial("/dev/ttyS0",115200)
+        serial_port = serial.Serial("/dev/ttyS0",115200)
 
     except Exception:
         raise ERROR(1303, f"failed to open serial port /dev/ttyS0 - {hex_code}")
@@ -315,16 +335,17 @@ def _send_command(hex_code:str):
 
     # write packet to the serial port
     try:
-        serialPort.write(packet)
+        serial_port.write(packet)
 
     except Exception:
         raise ERROR(1303, f"failed to write to serial port /dev/ttyS0 - {hex_code}")
     
     log(303, f"- {hex_code}")
 
-read_data('SPEED')
+#read_data('SPEED')
 #set_wheel_speed(1,1)
-
+#val=convert_from_hex("0x002161d4", universal["SPEED_CONV"])
+#print(val)
 '''
 #input 1 selects the wheel input 2 sets the torque
 #torque is limited to -21.4748 to 21.4748 Nm as specified by BCT documentation

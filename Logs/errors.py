@@ -48,7 +48,6 @@ class ERROR(BaseException):
 
         cur = int((front + back) / 2)
         current = int(codes[cur][:4])
-        print(current)
 
         if(front > back):
             return -1 
