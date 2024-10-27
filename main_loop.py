@@ -19,8 +19,10 @@ import matplotlib.pyplot as plt
 
 from imu_control import init_imu, imu_data
 from camera_control import init_camera, close_camera
+from camera_control import init_camera, close_camera
 from control import PID_control
 from plot_tools import plot_sloshy
+from dce_control import set_wheel_torque, set_wheel_speed, startup
 from dce_control import set_wheel_torque, set_wheel_speed, startup
 
 from Logs.log import log
@@ -28,6 +30,7 @@ from Logs.errors import ERROR
 
 
 __author__="Mike Fogel"
+__credits__=["Mike Fogel", "Simon Kowerski", "Serene Siu"]
 __credits__=["Mike Fogel", "Simon Kowerski", "Serene Siu"]
 __creation_date__="7/2/2023"
 
@@ -43,8 +46,10 @@ def end_experiment(error=False):
 
     Args:
     error (bool): true if error occured, false (default) if not
+    error (bool): true if error occured, false (default) if not
 
     """
+    close_camera()
     close_camera()
 
     set_wheel_speed(1,0)
@@ -59,6 +64,7 @@ def end_experiment(error=False):
     else:
         log(1)
 
+    exit()
     exit()
 
 ########### INITIAL VALUE CALCULATIONS START ###########
@@ -125,6 +131,11 @@ try:
 except Exception:
     log(2)
     exit()
+try:
+    startup()
+except Exception:
+    log(2)
+    exit()
 
 ########### MOTOR STARTUP CODE END ###########
 
@@ -140,7 +151,9 @@ except Exception:
 ########### CAMERA STARTUP CODE BEGIN ###########
 try:
     init_camera()
+    init_camera()
 except Exception:
+    end_experiment(True)
     end_experiment(True)
 ########### CAMERA STARTUP CODE END ###########
 
@@ -173,6 +186,7 @@ while (k < MAX_ITER):
         set_wheel_torque(1, u[k])
     except Exception:
         end_experiment()
+    #TODO: MIKE Update this for new motor
     #TODO: MIKE Update this for new motor
     time.sleep(0.025) # Good as of 11/5/2023 10:51 am
 

@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 
 __author__="Mike Fogel"
 __credits__=["Mike Fogel", "Simon Kowerski"]
+__credits__=["Mike Fogel", "Simon Kowerski"]
 __creation_date__="7/26/2023"
 
 def plot_sloshy(t, theta, theta_d, u, umotor, max_accel, err, errdot, ecumul):  

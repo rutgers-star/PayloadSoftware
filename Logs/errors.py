@@ -40,8 +40,8 @@ class ERROR(BaseException):
         "1304 - Failed to recieve data from DCE",
         "1305 - Recieved incorrect data from DCE",
         "1310 - Failed to open serial connection to DCE",
-        "1311 - Failed to confirm DCE startup",
-        "1350 - Failed to initalize IMU",
+        "1311 - Failed to confirm DCE startup" 
+        "1350 - Failed to initalize IMU" 
     ]
 
     __SNSR_codes = [    # 14XX
