@@ -1,35 +1,35 @@
-12:17:24     0000 - Experiment start 
-12:18:18     0000 - Experiment start 
-12:19:21     0000 - Experiment start 
+12:17:24 NEW 0000 - Experiment start 
+12:18:18 NEW 0000 - Experiment start 
+12:19:21 NEW 0000 - Experiment start 
 12:19:21     0310 - Successfully opened DCE serial connection 
 12:19:22 ERR 1303 - Failed to send command to DCE - serial port not open
-12:19:46     0000 - Experiment start 
+12:19:46 NEW 0000 - Experiment start 
 12:19:46     0310 - Successfully opened DCE serial connection 
 12:19:47 ERR 1303 - Failed to send command to DCE - serial port not open
-12:21:10     0000 - Experiment start 
+12:21:10 NEW 0000 - Experiment start 
 12:21:10     0310 - Successfully opened DCE serial connection 
 12:21:10     0303 - Successfully sent command to DCE - 0xec 0x04 0xfe 0x00 0x04
 12:21:10     0311 - Confirmed DCE Startup 
-12:21:10     0001 - Experiment end 
-12:25:06     0000 - Experiment start 
+12:21:10 STP 0001 - Experiment end 
+12:25:06 NEW 0000 - Experiment start 
 12:25:06     0310 - Successfully opened DCE serial connection 
 12:25:07     0303 - Successfully sent command to DCE - 0xec 0x04 0xfe 0x00 0x04
 12:25:07     0311 - Confirmed DCE Startup 
-12:25:07     0001 - Experiment end 
-12:32:37 *** 0000 - Experiment start 
+12:25:07 STP 0001 - Experiment end 
+12:32:37 NEW 0000 - Experiment start 
 12:32:37     0310 - Successfully opened DCE serial connection 
 12:32:37     0303 - Successfully sent command to DCE - 0xec 0x04 0xfe 0x00 0x04
 12:32:38 ERR 1311 - Failed to confirm DCE startup1350 - Failed to initalize IMU - DCE failed to supply correct values from HR_RUN_COUNT
 12:32:38     0301 - Requested speed command 
 12:32:38     0303 - Successfully sent command to DCE - 0xEB 0x00 0x00 0x00 0x0B 0x07 0x0A 0x01 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
-12:32:38     0002 - Known error occurred - experiment safely terminated early 
-12:34:28 *** 0000 - Experiment start 
+12:32:38 STP 0002 - Known error occurred - experiment safely terminated early 
+12:34:28 NEW 0000 - Experiment start 
 12:34:28     0310 - Successfully opened DCE serial connection 
 12:34:28     0303 - Successfully sent command to DCE - 0xec 0x04 0xfe 0x00 0x04
 12:34:29 ERR 1311 - Failed to confirm DCE startup
 12:34:29     0301 - Requested speed command 
 12:34:29     0303 - Successfully sent command to DCE - 0xEB 0x00 0x00 0x00 0x0B 0x07 0x0A 0x01 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
-12:34:29 xxx 0002 - Known error occurred - experiment safely terminated early 
+12:34:29 STP 0002 - Known error occurred - experiment safely terminated early 
 12:35:02 NEW 0000 - Experiment start 
 12:35:02     0310 - Successfully opened DCE serial connection 
 12:35:02     0303 - Successfully sent command to DCE - 0xec 0x04 0xfe 0x00 0x04
@@ -203,7 +203,6 @@
 13:35:23     0301 - Requested speed command 
 13:35:23     0303 - Successfully sent command to DCE - 0xEB 0x00 0x00 0x00 0x0B 0x07 0x0A 0x01 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
 13:35:23 STP 0001 - Experiment end 
-13:36:10 NEW 0000 - Experiment start 
 13:36:21 NEW 0000 - Experiment start 
 13:36:21     0300 - Requested torque command 
 13:36:21     0303 - Successfully sent command to DCE - 0xEB 0x00 0x00 0x00 0x13 0x07 0x0D 0x01 0x0B 0xEB 0xC2 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00

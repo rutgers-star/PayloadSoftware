@@ -5,7 +5,7 @@ A module written to generate commands to control the Blue Canyon Technologies D.
 
 Atributes:
     universal - an array to store commonly used values such as DCE memory addresses
-    serial_port - an object which stores an opened connection to the serial port
+    gSerialPort - an object which stores an opened connection to the serial port
 """
 
 import serial
@@ -18,7 +18,7 @@ __author__="Simon Kowerski"
 __credits__=["Andrew Yu", "Simon Kowerski"]
 __creation_date__="2023"
 
-serial_port=None
+gSerialPort=None
 
 universal={
     #                            | Address |  Length  |
@@ -27,7 +27,6 @@ universal={
 
     # Address where information is stored
     "WRITE_ADDR":           [0X00,0x00],
-    #TODO: Make these speed measure not speed command
     #                       | Address |  Length  |
     "SPEED_ADDR":           [0x04,0x69, 0x00, 0x10], 
     "TORQUE_ADDR":          [0x04,0x89, 0x00, 0x10],
@@ -48,13 +47,18 @@ def startup():
     Causes the thread to sleep for .6 seconds
     """
 
-    if(serial_port):
+    global gSerialPort
+
+    if(gSerialPort):
         return
 
     # opens serial Connection
     try:
-        serial_port=serial.Serial("/dev/ttyS0", 115200, timeout=1)
+        gSerialPort=serial.Serial("/dev/ttyS0", 115200, timeout=1)
     except Exception:
+        raise ERROR(1310)
+    
+    if not gSerialPort:
         raise ERROR(1310)
     
     log(310)
@@ -65,7 +69,7 @@ def startup():
 
 
     try:
-        val = serial_port.read(4)
+        val = gSerialPort.read(4)
            
     except Exception:
         raise ERROR(1311, "failed to read from DCE")
@@ -122,7 +126,6 @@ def convert_from_hex(parameter_hex:str, conversion_factor=1.0):
     return ret * conversion_factor
 
 #FIXME: When writing to one wheel, read from DCE to fill in missing values
-#FIXME: REPLACE SATURATION VALUES
 def set_wheel_torque(wheel_num:int, wheel_rate:float):
     """
     Generates and sends a code to the DCE to set the torque on one or all of the reaction wheels.
@@ -184,7 +187,6 @@ def set_wheel_torque(wheel_num:int, wheel_rate:float):
     return ret
 
 #FIXME: When writing to one wheel, read from DCE to fill in missing values
-#FIXME: REPLACE SATURATION VALUES
 def set_wheel_speed(wheel_num:int, wheel_rate:float):
     """
     Generates and sends a code to the DCE to set the speed of one or all of the reaction wheels.
@@ -255,8 +257,10 @@ def read_data(read_type:str):
     """
     log(302)
 
+    global gSerialPort
+
     # ensure serial connection is open
-    if(not serial_port):
+    if(not gSerialPort):
         raise ERROR(1302, f"serial port not open")
     command = universal["READ_HEADER"].copy() # add the read header
     
@@ -280,7 +284,7 @@ def read_data(read_type:str):
     # attempt to read from serial port
     read_length=6+1+universal[f"{read_type}_ADDR"][3]
     try:
-        actual=serial_port.read(read_length) # how many bytes to be read from the serial port (6 hex values for the header, DATA, 1 hex value for CRC8)
+        actual=gSerialPort.read(read_length) # how many bytes to be read from the serial port (6 hex values for the header, DATA, 1 hex value for CRC8)
 
     except Exception:
         raise ERROR(1304, f"failed to read from serial port - {ret_command}")
@@ -341,8 +345,10 @@ def _send_command(hex_code:str):
         hex_code (str): A string containing the entire command to be sent to the DCE formatted 0xAB 0xCD 0xEF ....
     """
 
+    global gSerialPort
+
     # ensure serial connection is open
-    if(not serial_port):
+    if(not gSerialPort):
         raise ERROR(1303, f"serial port not open")
 
     # make packet to send hex values to serial port
@@ -353,47 +359,10 @@ def _send_command(hex_code:str):
 
     # write packet to the serial port
     try:
-        serial_port.write(packet)
+        gSerialPort.write(packet)
 
     except Exception:
         raise ERROR(1303, f"failed to write to serial port at /dev/ttyS0 - {hex_code}")
     
     log(303, f"- {hex_code}")
 
-'''
-#input 1 selects the wheel input 2 sets the torque
-#torque is limited to -21.4748 to 21.4748 Nm as specified by BCT documentation
-print(set_wheel_torque(2,-21.4748)[0])
-
-#input 1 selects the wheel input 4 sets the speed
-#speed is limited to -6553.4 to 6553.4 rpm as specified by BCT documentation
-print(set_wheel_speed(4,6334.4781)[0])
-print(set_wheel_speed(4,-6355.7)[0])
-
-#Attempts to read data from DCE
-#print(read_data("torque"))
-
-#reading tests
-
-length=2
-actual=format(0x1acf0000000083de83de7bb87bb800, "b")
-actual=hex(int(actual, 2))[2:]
-dce_header=actual[0:11]
-dce_data=actual[12:-2]
-dce_crc8=actual[-2:]
-
-wheel_set=["","","",""]
-wheel=0
-data_point=0
-
-for item in dce_data:
-    wheel_set[wheel]+=item
-    data_point+=1
-    if data_point==length*2:
-        wheel_set[wheel]=convert_from_hex(wheel_set[wheel], .2)
-        data_point=0
-        wheel+=1
-    
-print(wheel_set)        
-print(_verify_output("1ACF1000000401020304FA"))
-'''

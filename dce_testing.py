@@ -12,23 +12,44 @@ __author__="Simon Kowerski"
 __credits__=["Simon Kowerski"]
 __creation_date__="8/8/2024"
 
+spin = False
+
 try:
     log(0)
     startup()
-    set_wheel_torque(1,1)
+    
+    if spin:
+        set_wheel_torque(1,1)
 
-    sleep(10)
+        sleep(10)
 
-    output=read_data("SPEED")
+    output=read_data("Torque")
 
+    print("torque")
     print(output[0])
     print(output[1])
     print(output[2])
+    print()
 
-    set_wheel_speed(1, 0)
+    output=read_data("SPEED")
+
+    print("speed")
+    print(output[0])
+    print(output[1])
+    print(output[2])
+    print()
+
+    if spin:
+        set_wheel_speed(1, 0)
     log(1)
 
-except Exception:
-    set_wheel_speed(1, 0)
+except ERROR:
+    if spin:
+        set_wheel_speed(1, 0)
     log(2)
+
+except Exception:
+    if spin:
+        set_wheel_speed(1, 0)
+    raise ERROR(1000)
 

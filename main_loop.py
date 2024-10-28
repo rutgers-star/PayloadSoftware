@@ -50,7 +50,6 @@ def end_experiment(error=False):
 
     """
     close_camera()
-    close_camera()
 
     set_wheel_speed(1,0)
 
@@ -64,7 +63,6 @@ def end_experiment(error=False):
     else:
         log(1)
 
-    exit()
     exit()
 
 ########### INITIAL VALUE CALCULATIONS START ###########
@@ -131,11 +129,6 @@ try:
 except Exception:
     log(2)
     exit()
-try:
-    startup()
-except Exception:
-    log(2)
-    exit()
 
 ########### MOTOR STARTUP CODE END ###########
 
@@ -151,9 +144,7 @@ except Exception:
 ########### CAMERA STARTUP CODE BEGIN ###########
 try:
     init_camera()
-    init_camera()
 except Exception:
-    end_experiment(True)
     end_experiment(True)
 ########### CAMERA STARTUP CODE END ###########
 
@@ -186,7 +177,6 @@ while (k < MAX_ITER):
         set_wheel_torque(1, u[k])
     except Exception:
         end_experiment()
-    #TODO: MIKE Update this for new motor
     #TODO: MIKE Update this for new motor
     time.sleep(0.025) # Good as of 11/5/2023 10:51 am
 
