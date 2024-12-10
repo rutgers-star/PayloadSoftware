@@ -40,16 +40,20 @@ universal={
     "TORQUE_READ_CONV":          [1e-8]
 }
 
-def startup():
+def dce_startup():
     """
     Opens the serial connection and reads from the HR_RUN_COUNT register to ensure that the DCE is running
     
     Causes the thread to sleep for .6 seconds
+
+    Raises:
+        ERROR(1310): Failed to open serial connection to DCE
+        ERROR(1311): Failed to confirm DCE Startup (incorrect sync word)
     """
 
     global gSerialPort
 
-    if(gSerialPort):
+    if gSerialPort:
         return
 
     # opens serial Connection
@@ -58,7 +62,8 @@ def startup():
     except Exception:
         raise ERROR(1310)
     
-    if not gSerialPort:
+    #TODO: Test This
+    if not gSerialPort.cts:
         raise ERROR(1310)
     
     log(310)
@@ -66,7 +71,6 @@ def startup():
 
     # attempts to read from HR_RUN_COUNT
     _send_command("0xec 0x04 0xfe 0x00 0x04")
-
 
     try:
         val = gSerialPort.read(4)
@@ -138,6 +142,10 @@ def set_wheel_torque(wheel_num:int, wheel_rate:float):
     
     Returns:
         str: The command formatted and ready to send to the DCE - formatted 0xAB 0xCD 0xEF .....
+
+    Raises:
+        ERROR(1300): Failed to generate torque command (incorrect inputs)
+        ERROR(1303): Failed to send command to DCE (__send_command())
     """
     log(300)
     command = universal["WRITE_HEADER"].copy()  # add the write header
@@ -150,7 +158,7 @@ def set_wheel_torque(wheel_num:int, wheel_rate:float):
         raise ERROR(1300, f"requested wheel torque is out of operational limits - {wheel_rate}")
     
     # Ensures wheel selected properly
-    if(wheel_num > 4 or wheel_num < 0):
+    if((type(wheel_num) != type(4)) or wheel_num > 4 or wheel_num < 0):
         raise ERROR(1300, f"wheel selected improperly - {wheel_num}")
     
     #          |      Wheel 1      |      Wheel 2      |      Wheel 3      |      Wheel 4      |
@@ -199,6 +207,10 @@ def set_wheel_speed(wheel_num:int, wheel_rate:float):
     
     Returns:
         str: The command formatted and ready to send to the DCE - formatted 0xAB 0xCD 0xEF .....
+
+    Raises:
+        ERROR(1301): Failed to generate speed command (incorrect inputs)
+        ERROR(1303): Failed to send command to DCE (__send_command())
     """
     log(301)
     command = universal["WRITE_HEADER"].copy()  # add the write header
@@ -211,7 +223,7 @@ def set_wheel_speed(wheel_num:int, wheel_rate:float):
         raise ERROR(1301, f"requested wheel rate is out of operational limits - {wheel_rate}")
     
     # Ensures wheel is requested properly
-    if(wheel_num > 4 or wheel_num < 0):
+    if((type(wheel_num) != type(4)) or wheel_num > 4 or wheel_num < 0):
         raise ERROR(1301, f"wheel selected incorrectly - {wheel_num}")
     
     #          | Wheel 1 | Wheel 2 | Wheel 3 | Wheel 4 |
@@ -254,6 +266,13 @@ def read_data(read_type:str):
         int[4]: the speed or torque values collected converted into integers\n
         str: the exact data collected from the DCE - formatted 0xAB 0xCD 0xEF .....\n
         str: The command formatted and ready to send to the DCE - formatted 0xAB 0xCD 0xEF .....\n
+
+    Raises:
+        ERROR(1302): Failed to generate read command (unopened serial port)
+        ERROR(1302): Failed to generate read command (incorrect inputs)
+        ERROR(1304): Failed to recieve data from DCE 
+        ERROR(1305): Recieved incorrect data from DCE
+        ERROR(1303): Failed to send command to DCE (__send_command())
     """
     log(302)
 
@@ -262,6 +281,7 @@ def read_data(read_type:str):
     # ensure serial connection is open
     if(not gSerialPort):
         raise ERROR(1302, f"serial port not open")
+    
     command = universal["READ_HEADER"].copy() # add the read header
     
     # Ensures user is requesting either speed or torque data from the DCE
@@ -343,6 +363,9 @@ def _send_command(hex_code:str):
     
     Args:
         hex_code (str): A string containing the entire command to be sent to the DCE formatted 0xAB 0xCD 0xEF ....
+    
+    Raises:
+        ERROR(1303): Failed to send command to DCE
     """
 
     global gSerialPort

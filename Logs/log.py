@@ -24,7 +24,7 @@ def log(code:int|str, extra=''):
         Must open an experiment first using open_experiment()
 
     Args:
-        code (int or string): the error or event being logged
+        code (int or string): the event (int) or error (string) being logged
         extra (str): Optional, any additional details to be included in the log
     """
     filename = f"{__gPath}{str(date.today())}.log"

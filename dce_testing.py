@@ -12,15 +12,14 @@ __author__="Simon Kowerski"
 __credits__=["Simon Kowerski"]
 __creation_date__="8/8/2024"
 
-spin = False
+spin = True
 
 try:
     log(0)
-    startup()
+    dce_startup()
     
     if spin:
         set_wheel_torque(1,1)
-
         sleep(10)
 
     output=read_data("Torque")
@@ -41,6 +40,7 @@ try:
 
     if spin:
         set_wheel_speed(1, 0)
+        
     log(1)
 
 except ERROR:

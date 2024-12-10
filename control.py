@@ -11,7 +11,7 @@ author="Mike Fogel"
 credits=["Mike Fogel"]
 creation_date="2024"
 
-# function definition
+#TODO: docustring
 def PID_control(theta_d, k, t, dt, I, J, theta, vel, acc, err, errdot, ecumul):    
     kp=0.011 
     kd=0.01

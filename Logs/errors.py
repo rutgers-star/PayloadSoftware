@@ -6,6 +6,10 @@ Written in accordance to the STAR Payload Software Standards
 Makes use of the log module to handle recording errors that occur
 """
 
+__author__="Simon Kowerski"
+__credits__=["Simon Kowerski"]
+__creation_date__="1/22/2024"
+
 from Logs.log import log
 
 class ERROR(BaseException): 
@@ -24,6 +28,7 @@ class ERROR(BaseException):
         __SNSR_CODES[] - a string array which stores error messages in the form "14XX - Error Message" 
                          used for storing errors that occur during communication with any sensors (camera, leds, pressure sensors, etc)
     """
+
     __EXP_codes = [     # 10XX
         "1000 - Unknown error occured"
     ]
@@ -71,6 +76,7 @@ class ERROR(BaseException):
             case _:
                 codes=self.__EXP_codes
                 code=0
+    
         str=f"{self.__binary_search(code, codes)}"
         #FIXME: no '-' when no context
         log(str, f"- {context}")
@@ -82,7 +88,12 @@ class ERROR(BaseException):
         """
         Performs a binary search to locate the error message for the given error code in the provided array
 
-        
+        Args:
+            code (int): the error code to search for
+            codes (string[]): the array containing the appropriate error codes and messages
+            front (int): the current front of the array indicating where to start the search, can be set by default to the start of the array
+            back (int): the current back of the array indicating where to end the search, can be set by default to the end of the array
+
         """
         if(back==-1000):
             back=len(codes)-1

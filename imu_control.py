@@ -19,6 +19,8 @@ __creation_date__="7/25/2023"
 
 pi=math.pi
 
+#TODO: Redo how this works, make it more similar to dce control module
+
 def init_imu():
     """
     Initialize the IMU to allow collection of data
