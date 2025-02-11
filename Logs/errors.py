@@ -81,7 +81,7 @@ class ERROR(BaseException):
         #FIXME: no '-' when no context
         log(str, f"- {context}")
         super().__init__(str)
-        super().add_note(context)
+        #super().add_note(context)
 
     def __binary_search(self, code, codes, front=0, back=-1000):
         #TODO: Finish docustring then push changes

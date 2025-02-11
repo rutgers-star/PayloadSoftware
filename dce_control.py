@@ -271,7 +271,7 @@ def read_data(read_type:str):
         ERROR(1302): Failed to generate read command (unopened serial port)
         ERROR(1302): Failed to generate read command (incorrect inputs)
         ERROR(1304): Failed to recieve data from DCE 
-        ERROR(1305): Recieved incorrect data from DCE
+        ERROR(1305): Recieved incorrect data from DCE (CRC check returned false)
         ERROR(1303): Failed to send command to DCE (__send_command())
     """
     log(302)
