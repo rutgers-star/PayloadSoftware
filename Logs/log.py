@@ -16,7 +16,7 @@ __author__ = "Simon Kowerski"
 __credits__ = ["Simon Kowerski"]
 __creation_date__="1/22/2024"
 
-__gPath = "Logs/Daily Logs/"
+__gPath = "Logs/DailyLogs/"
 
 def log(code:int|str, extra=''):
     """
@@ -41,7 +41,7 @@ def log(code:int|str, extra=''):
         callout="   "
         if code == 0:
             callout = "NEW"
-        if code == 1 or code == 2:
+        if code == 1 or code == 2 or code == 99:
             callout = "STP"
         message = f"{callout} {codemsg.readlines()[code]}"[:-1]
     else:

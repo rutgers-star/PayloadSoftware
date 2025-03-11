@@ -29,8 +29,9 @@ class ERROR(BaseException):
                          used for storing errors that occur during communication with any sensors (camera, leds, pressure sensors, etc)
     """
 
-    __EXP_codes = [     # 10XX
-        "1000 - Unknown error occured"
+    __EXP_codes = [     # 10XX      (If you see one of these there is a huge problem)
+        "1000 - Unknown error occured",
+        "1001 - CRITICAL ERROR - unable to stop reaction wheel"
     ]
 
     __COMM_codes = [    # 11XX
@@ -79,7 +80,10 @@ class ERROR(BaseException):
     
         str=f"{self.__binary_search(code, codes)}"
         #FIXME: no '-' when no context
-        log(str, f"- {context}")
+        if(context == ""):
+            log(str)
+        else:
+            log(str, f"- {context}")
         super().__init__(str)
         #super().add_note(context)
 

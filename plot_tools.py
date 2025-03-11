@@ -11,7 +11,7 @@ __credits__=["Mike Fogel", "Simon Kowerski"]
 __credits__=["Mike Fogel", "Simon Kowerski"]
 __creation_date__="7/26/2023"
 
-def plot_sloshy(t, theta, theta_d, u, umotor, max_accel, err, errdot, ecumul):  
+def plot_sloshy(t, theta, theta_d, u, umotor, err, errdot, ecumul):  
     """
     Uses MatPlotLib to generate plots of collected the data
 
@@ -41,8 +41,6 @@ def plot_sloshy(t, theta, theta_d, u, umotor, max_accel, err, errdot, ecumul):
     
     ax[0,1].plot(t,u)
     ax[0,1].plot(t,umotor)
-    ax[0,1].axhline(y=max_accel, color = 'r', linestyle = '-')
-    ax[0,1].axhline(y=-max_accel, color = 'r', linestyle = '-')
     ax[0,1].set_xlabel('t (s)')
     ax[0,1].set_ylabel('Controller')
     ax[0,1].set_ylim([-15000,15000])

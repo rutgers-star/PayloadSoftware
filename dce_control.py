@@ -154,8 +154,8 @@ def set_wheel_torque(wheel_num:int, wheel_rate:float):
     command.extend([0x07,0x0D, wheel_num])      # call the 'SetWheelTorque32' command
     
     # Ensures requested rate is within safe operating bounds
-    if wheel_rate>0.0055 or wheel_rate<-0.0055:
-        raise ERROR(1300, f"requested wheel torque is out of operational limits - {wheel_rate}")
+    # if wheel_rate>0.0055 or wheel_rate<-0.0055:
+    #    raise ERROR(1300, f"requested wheel torque is out of operational limits - {wheel_rate}")
     
     # Ensures wheel selected properly
     if((type(wheel_num) != type(4)) or wheel_num > 4 or wheel_num < 0):
@@ -219,8 +219,8 @@ def set_wheel_speed(wheel_num:int, wheel_rate:float):
     command.extend([0x07,0x0A, wheel_num])      # call the 'SetWheelSpeed4' command
 
     # Ensures requested rate is within safe operating bounds
-    if wheel_rate>6553.4 or wheel_rate<-6553.4:
-        raise ERROR(1301, f"requested wheel rate is out of operational limits - {wheel_rate}")
+    # if wheel_rate>6553.4 or wheel_rate<-6553.4:
+    #    raise ERROR(1301, f"requested wheel rate is out of operational limits - {wheel_rate}")
     
     # Ensures wheel is requested properly
     if((type(wheel_num) != type(4)) or wheel_num > 4 or wheel_num < 0):
