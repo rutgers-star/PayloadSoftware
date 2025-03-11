@@ -19,7 +19,7 @@ __creation_date__="7/25/2023"
 
 pi=math.pi
 
-#TODO: Redo how this works, make it more similar to dce control module
+#TODO: maybe redo how this works, make it more similar to dce control module
 
 def init_imu():
     """
@@ -45,8 +45,6 @@ def init_imu():
     except Exception:
         raise ERROR(1350, "failed to open serial connection")
 
-
-    
     # Clearing IMU Header
     for i in range(0,header):
         data=imu.readline()
