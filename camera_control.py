@@ -12,7 +12,7 @@ author="Serene Siu"
 credits=["Serene Siu"]
 creation_date="10/4/24"
 
-camlog=open("camlog.txt",'w')
+camlog=open("Logs/ExpLogs/camlog.txt",'w')
 
 def init_camera():
     """
