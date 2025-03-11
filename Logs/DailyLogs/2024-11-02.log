@@ -1,0 +1,4 @@
+17:25:12 NEW 0000 - Experiment start 
+17:25:12 ERR 1310 - Failed to open serial connection to DCE - 
+17:25:12     0301 - Requested speed command 
+17:25:12 ERR 1303 - Failed to send command to DCE - serial port not open
