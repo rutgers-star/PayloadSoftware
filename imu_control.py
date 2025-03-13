@@ -28,6 +28,10 @@ def init_imu():
      Returns
         yaw0 (int): initial yaw
         imu (imu): conection to the connected imu device
+
+    Raises
+        ERROR(1350): Failed to initalize IMU
+
     """
 
     log(350)

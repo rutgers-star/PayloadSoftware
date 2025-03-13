@@ -17,6 +17,9 @@ camlog=open("Logs/ExpLogs/camlog.txt",'w')
 def init_camera():
     """
     Camera Start Up
+
+    Raises
+        ERROR(1400): Failed to start camera
     """
 
     log(400)
@@ -24,7 +27,7 @@ def init_camera():
     try:
         cam=subprocess.Popen(["/usr/local/bin/libcamera-vid", "-t 20000", "--nopreview", "--width", "960", "--height","540","--vflip","--saturation","0","--save-pts","camtimes.txt","--exposure","long","--framerate","24","-o","sloshing.h264"], text=True, stderr=camlog)
     except Exception:
-        raise ERROR(1400, "fail to startup camera")
+        raise ERROR(1400)
 
     log(401)
 
