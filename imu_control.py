@@ -98,7 +98,7 @@ def init_imu():
         qOLD=q0;
        
     if (settled == 0):
-        raise ERROR(1350, "IMU did not settle")
+        raise ERROR(350, "IMU did not settle")
 
     return yaw0, imu
 
@@ -114,7 +114,7 @@ def imu_data(imu, yaw0, yawOld):
     Returns:
         int[]: yawNew, pitchNew, rollNew - self explanatory
     """
-    log(351)
+    #log(351)
     data=imu.readline()
     numData=data.decode()
     numData=numData.split(",")

@@ -20,9 +20,14 @@ spinning = False
 imu_data_points = 10    # Number of times to read and print imu data for each direction
 time_each_dir = 10      # Time delay (in seconds) before switching wheel torque
 
+__gExpLogPath="Logs/ExpLogs/"
+
 try:
     log(0)
     dce_startup()
+
+    filename = f"{__gExpLogPath}experiment-timesteps.log"
+    file = open(filename, "w")
 
     global yaw0, imu, yawOld
     yaw0,imu=init_imu()
@@ -34,15 +39,15 @@ try:
         print("Full Positive Torque")
         for i in range(imu_data_points):
             yaw,pitch,roll=imu_data(imu,yaw0,yawOld)
-            print(f"yaw: {yaw}\tpitch: {pitch}\troll: {roll}\n")
+            file.write(f"{i} yaw: {yaw}\tpitch: {pitch}\troll: {roll}")
             sleep(time_each_dir/imu_data_points)
 
         set_wheel_torque(1,-1)
         print("\nFull Negative Torque")
         for i in range(imu_data_points):
             yaw,pitch,roll=imu_data(imu,yaw0,yawOld)
-            print(f"yaw: {yaw}\tpitch: {pitch}\troll: {roll}\n")
-            sleep(time_each_dir/time_each_dir)
+            file.write(f"{i} yaw: {yaw}\tpitch: {pitch}\troll: {roll}")
+            sleep(time_each_dir/imu_data_points)
 
 
     output=read_data("Torque")
