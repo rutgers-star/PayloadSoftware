@@ -91,14 +91,14 @@ def init_imu():
         yaw0=yawNew
         
         if ((abs(q0 - qOLD) < imutol) and settled == 0):
-            log(1352, f"t= {t}, yaw0= {yaw0}")
+            log(352, f"t= {t}, yaw0= {yaw0}")
             settled=1;
             tsettle=t;
     
         qOLD=q0;
        
     if (settled == 0):
-        raise ERROR(350, "IMU did not settle")
+        raise ERROR(1350, "IMU did not settle")
 
     return yaw0, imu
 
