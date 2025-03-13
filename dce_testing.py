@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+#TODO: Update docustring
 """
 A module written to to test custom BCT DCE control code
 """
@@ -7,6 +8,7 @@ A module written to to test custom BCT DCE control code
 from Logs.log import log
 from dce_control import *
 from time import sleep
+from imu_control import *
 
 __author__="Simon Kowerski"
 __credits__=["Simon Kowerski"]
@@ -15,14 +17,33 @@ __creation_date__="8/8/2024"
 spin = True
 spinning = False
 
+imu_data_points = 10    # Number of times to read and print imu data for each direction
+time_each_dir = 10      # Time delay (in seconds) before switching wheel torque
+
 try:
     log(0)
     dce_startup()
 
+    global yaw0, imu, yawOld
+    yaw0,imu=init_imu()
+    yawOld=0
+
     if spin:
         set_wheel_torque(1,1)
-        sleep(10)
         spinning = True
+        print("Full Positive Torque")
+        for i in range(imu_data_points):
+            yaw,pitch,roll=imu_data(imu,yaw0,yawOld)
+            print(f"yaw: {yaw}\tpitch: {pitch}\troll: {roll}\n")
+            sleep(time_each_dir/imu_data_points)
+
+        set_wheel_torque(1,-1)
+        print("\nFull Negative Torque")
+        for i in range(imu_data_points):
+            yaw,pitch,roll=imu_data(imu,yaw0,yawOld)
+            print(f"yaw: {yaw}\tpitch: {pitch}\troll: {roll}\n")
+            sleep(time_each_dir/time_each_dir)
+
 
     output=read_data("Torque")
 
