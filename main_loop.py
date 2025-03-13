@@ -36,7 +36,7 @@ __credits__=["Mike Fogel", "Simon Kowerski", "Serene Siu"]
 __creation_date__="7/2/2023"
 
 #TODO: Update these - we need a max torque to prevent the ADCS software throwing an error
-MAX_ITER=100            # Max number of allowed iterations to meet desired angle 
+MAX_ITER=600          # Max number of allowed iterations to meet desired angle 
 
 CAMERA=False            # Whether or not camera being used during current experiment
 SPINNING=False          # Whether or not the wheel is currently spinning. DO NOT CHANGE THIS VARIABLE.
@@ -144,7 +144,7 @@ def experiment_reader(experiment_name):
 log(0)
 # Reaction wheel Moment of Inertia
 """
-Jx=2.491E-4 # kg m^2
+Jx=2.491E-4 # kg m^2   
 Jy=2.250E-4 # kg m^2
 Jz=4.703E-4 # kg m^2
 """
@@ -155,7 +155,8 @@ Jz=1.151E-4 # kg m^2
 
 J=math.sqrt(Jx**2 + Jy**2 + Jz**2)
 # TODO: Recieve and update value from mike
-I=0.02344 # Full
+#I=0.02344 # Full
+I=0.05
 
 # Initialization
 theta_d=90 # Desired angle
@@ -206,6 +207,7 @@ file = open(filename, "w")
 
 ########### MAIN CONTROL LOOP START ###########
 while (k < MAX_ITER):
+    print(k)
     t[k]=time.time() - tstart
     dt=t[k] - t[k-1]
     
