@@ -15,10 +15,11 @@ __credits__=["Simon Kowerski"]
 __creation_date__="8/8/2024"
 
 spin = True
-spinning = False
+spinning = False        # Keeps track of if the wheel is currently spinninng. Should be false at compile time
+kill = False            # If set to true, will simply connect to the wheel and set its speed to zero and then end
 
-imu_data_points = 10    # Number of times to read and print imu data for each direction
-time_each_dir = 10      # Time delay (in seconds) before switching wheel torque
+imu_data_points = 80    # Number of times to read and print imu data for each direction
+time_each_dir = 20      # Time delay (in seconds) before switching wheel torque
 
 __gExpLogPath="Logs/ExpLogs/"
 
@@ -29,47 +30,52 @@ try:
     filename = f"{__gExpLogPath}experiment-timesteps.log"
     file = open(filename, "w")
 
-    global yaw0, imu, yawOld
-    yaw0,imu=init_imu()
-    yawOld=0
-
-    if spin:
-        set_wheel_torque(1,1)
-        spinning = True
-        print("Full Positive Torque")
-        for i in range(imu_data_points):
-            yaw,pitch,roll=imu_data(imu,yaw0,yawOld)
-            file.write(f"{i} yaw: {yaw}\tpitch: {pitch}\troll: {roll}")
-            sleep(time_each_dir/imu_data_points)
-
-        set_wheel_torque(1,-1)
-        print("\nFull Negative Torque")
-        for i in range(imu_data_points):
-            yaw,pitch,roll=imu_data(imu,yaw0,yawOld)
-            file.write(f"{i} yaw: {yaw}\tpitch: {pitch}\troll: {roll}")
-            sleep(time_each_dir/imu_data_points)
+    if kill:
+        set_wheel_speed(1,0)
 
 
-    output=read_data("Torque")
+    else:
+        global yaw0, imu, yawOld
+        yaw0,imu=init_imu()
+        yawOld=0
+    
+        if spin:
+            set_wheel_torque(1,1)
+            spinning = True
+            print("Full Positive Torque")
+            for i in range(imu_data_points):
+                yaw,pitch,roll=imu_data(imu,yaw0,yawOld)
+                file.write(f"{i} yaw: {yaw}\tpitch: {pitch}\troll: {roll}\n")
+                sleep(time_each_dir/imu_data_points)
 
-    print("torque")
-    print(output[0])
-    print(output[1])
-    print(output[2])
-    print()
+            set_wheel_torque(1,-1)
+            print("\nFull Negative Torque")
+            for x in range(imu_data_points):
+                yaw,pitch,roll=imu_data(imu,yaw0,yawOld)
+                file.write(f"{x} yaw: {yaw}\tpitch: {pitch}\troll: {roll}\n")
+                sleep(time_each_dir/imu_data_points)
 
-    output=read_data("SPEED")
 
-    print("speed")
-    print(output[0])
-    print(output[1])
-    print(output[2])
-    print()
+        output=read_data("Torque")
+
+        print("torque")
+        print(output[0])
+        print(output[1])
+        print(output[2])
+        print()
+
+        output=read_data("SPEED")
+
+        print("speed")
+        print(output[0])
+        print(output[1])
+        print(output[2])
+        print()
 
     if spin:
         set_wheel_speed(1, 0)
         spinning = False
-        
+
     log(1)
 
 except ERROR:
