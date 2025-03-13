@@ -28,8 +28,9 @@ universal={
     # Address where information is stored
     "WRITE_ADDR":           [0X00,0x00],
     #                       | Address |  Length  |
-    "SPEED_ADDR":           [0x04,0x69, 0x00, 0x10], 
-    "TORQUE_ADDR":          [0x04,0x89, 0x00, 0x10],
+    "SPEED_ADDR":           [0x04, 0x69, 0x00, 0x10], 
+    "TORQUE_ADDR":          [0x04, 0x89, 0x00, 0x10],
+    "CTRL_MODE_ADDR":    [0x04, 0xD9, 0x00, 0x04],
 
     # Conversion factors for WRITE information 
     "SPEED_WRITE_CONV":           [0.2], 
@@ -37,7 +38,8 @@ universal={
 
     # Conversion factors for READ information 
     "SPEED_READ_CONV":           [0.002], 
-    "TORQUE_READ_CONV":          [1e-8]
+    "TORQUE_READ_CONV":          [1e-8],
+    "CTRL_MODE_READ_CONV":         [1]
 }
 
 def dce_startup():
@@ -124,7 +126,6 @@ def convert_from_hex(parameter_hex:str, conversion_factor=1.0):
 
     # obey twos compliment
     if len(format(twos,"b"))%4==0:
-        print("here")
         ret=ret-(1 << len(format(ret,"b")))
 
     return ret * conversion_factor
@@ -260,7 +261,7 @@ def read_data(read_type:str):
     Generates and sends a code to the DCE to read speed or torque data
 
     Args:
-        read_type (str): Type of data to be read. MUST be either 'SPEED' or 'TORQUE'
+        read_type (str): Type of data to be read. MUST be either 'SPEED' or 'TORQUE' or 'CTRL_MODE'
     
     Returns:
         int[4]: the speed or torque values collected converted into integers\n
@@ -271,9 +272,11 @@ def read_data(read_type:str):
         ERROR(1302): Failed to generate read command (unopened serial port)
         ERROR(1302): Failed to generate read command (incorrect inputs)
         ERROR(1304): Failed to recieve data from DCE 
-        ERROR(1305): Recieved incorrect data from DCE (CRC check returned false)
+        ERROR(1305): Recieved incorrect data from DCE (CRC check returned false)888888888888888888888888888888888888888888889
         ERROR(1303): Failed to send command to DCE (__send_command())
     """
+    acc_types=["SPEED", "TORQUE", "CTRL_MODE"]
+    
     log(302)
 
     global gSerialPort
@@ -286,7 +289,9 @@ def read_data(read_type:str):
     
     # Ensures user is requesting either speed or torque data from the DCE
     read_type = read_type.upper()
-    if(read_type != "SPEED" and read_type != "TORQUE"):
+    
+    if(read_type not in acc_types):
+    #if(read_type != "SPEED" and read_type != "TORQUE"):
         raise ERROR(1302, f"data type {read_type} not recognized")
 
     command.extend(universal[f"{read_type}_ADDR"]) # add the address AND length read
@@ -319,7 +324,7 @@ def read_data(read_type:str):
         raise ERROR(1305)
 
     # perform conversions on actual
-    len_per = universal[f"{read_type}_ADDR"][3] / 2
+    len_per =int(universal[f"{read_type}_ADDR"][3] / 2)
     #wheel_arr = [actual[12:20], actual[20:28], actual[28:36], actual[36:44]]
     wheel_arr = [actual[12:12+len_per], actual[12+len_per:12+len_per*2], actual[12+len_per*2:12+len_per*3],actual[12+len_per*3:12+len_per*4]]
     for i in range(len(wheel_arr)):
@@ -388,4 +393,3 @@ def _send_command(hex_code:str):
         raise ERROR(1303, f"failed to write to serial port at /dev/ttyS0 - {hex_code}")
     
     log(303, f"- {hex_code}")
-
