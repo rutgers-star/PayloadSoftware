@@ -19,7 +19,7 @@ __creation_date__="1/22/2024"
 
 __gPath = "Logs/DailyLogs/"
 
-__quiet = False
+__quiet = True
 
 __codes__ = {
     #     [String, quiet (True to silence when quiet mode is on)]
@@ -109,10 +109,3 @@ def log(code:int|str, extra=''):
 
     file.write(f'{current_time} {message} {extra}\n')
     file.close()
-
-
-log(0)
-log(310)
-log(311)
-log(303)
-log(1)
