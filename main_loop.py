@@ -13,6 +13,7 @@ Atributes:
     SPINNING: used to keep track of whether or not the reaction wheel is SPINNING, not to be changed by the user
 """
 
+from datetime import date
 import math
 import time
 import subprocess
@@ -202,7 +203,7 @@ tstart=time.time()
 
 hardware_startup()
 
-filename = f"{__gExpLogPath}experiment-timesteps.log"
+filename = f"experiment_{str(date.today())}_{str(time.localtime().tm_hour)}-{str(time.localtime().tm_min)}.log"
 file = open(filename, "w")
 
 ########### MAIN CONTROL LOOP START ###########

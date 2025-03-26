@@ -5,6 +5,14 @@
 A module written to to test custom BCT DCE control code
 """
 
+"""
+STUFF TO DO (FOR SIMON)
+-Fix errors (see screenshot from 3/13)
+-Formatting experiment timestep files and making more than one
+-figure out how to clean up logging in general to have less events
+"""
+
+from datetime import date
 from Logs.log import log
 from dce_control import *
 from time import sleep
@@ -14,7 +22,7 @@ __author__="Simon Kowerski"
 __credits__=["Simon Kowerski"]
 __creation_date__="8/8/2024"
 
-spin = True
+spin = True             # If true, the wheel will spin
 spinning = False        # Keeps track of if the wheel is currently spinninng. Should be false at compile time
 kill = False            # If set to true, will simply connect to the wheel and set its speed to zero and then end
 
@@ -27,12 +35,11 @@ try:
     log(0)
     dce_startup()
 
-    filename = f"{__gExpLogPath}experiment-timesteps.log"
+    filename = f"experiment_{str(date.today())}_{str(time.localtime().tm_hour)}-{str(time.localtime().tm_min)}.log"
     file = open(filename, "w")
 
     if kill:
         set_wheel_speed(1,0)
-
 
     else:
         global yaw0, imu, yawOld
@@ -47,6 +54,8 @@ try:
                 yaw,pitch,roll=imu_data(imu,yaw0,yawOld)
                 file.write(f"{i} yaw: {yaw}\tpitch: {pitch}\troll: {roll}\n")
                 sleep(time_each_dir/imu_data_points)
+
+            file.write(f"\n\n SWITCHING DIRECTIONS \n\n");
 
             set_wheel_torque(1,-1)
             print("\nFull Negative Torque")
@@ -72,9 +81,9 @@ try:
         print(output[2])
         print()
 
-    if spin:
-        set_wheel_speed(1, 0)
-        spinning = False
+        if spin:
+            set_wheel_speed(1, 0)
+            spinning = False
 
     log(1)
 
