@@ -29,6 +29,8 @@ class ERROR(BaseException):
                          used for storing errors that occur during communication with any sensors (camera, leds, pressure sensors, etc)
     """
 
+    #TODO: Error overhaul similar to log overhaul
+
     __EXP_codes = [     # 10XX      (If you see one of these there is a huge problem)
         "1000 - Unknown error occured",
         "1001 - CRITICAL ERROR - unable to stop reaction wheel"
