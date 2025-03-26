@@ -35,7 +35,7 @@ try:
     log(0)
     dce_startup()
 
-    filename = f"experiment_{str(date.today())}_{str(time.localtime().tm_hour)}-{str(time.localtime().tm_min)}.log"
+    filename = f"{str(date.today())}_{str(time.localtime().tm_hour)}-{str(time.localtime().tm_min)}.explog"
     file = open(filename, "w")
 
     if kill:

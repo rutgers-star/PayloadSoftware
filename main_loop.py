@@ -203,7 +203,7 @@ tstart=time.time()
 
 hardware_startup()
 
-filename = f"experiment_{str(date.today())}_{str(time.localtime().tm_hour)}-{str(time.localtime().tm_min)}.log"
+filename = f"{str(date.today())}_{str(time.localtime().tm_hour)}-{str(time.localtime().tm_min)}.explog"
 file = open(filename, "w")
 
 ########### MAIN CONTROL LOOP START ###########
