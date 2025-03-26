@@ -79,7 +79,6 @@ class ERROR(BaseException):
                 code=0
     
         str=f"{self.__binary_search(code, codes)}"
-        #FIXME: no '-' when no context
         if(context == ""):
             log(str)
         else:
@@ -97,7 +96,9 @@ class ERROR(BaseException):
             codes (string[]): the array containing the appropriate error codes and messages
             front (int): the current front of the array indicating where to start the search, can be set by default to the start of the array
             back (int): the current back of the array indicating where to end the search, can be set by default to the end of the array
-
+        
+        Returns:
+            str: The appropriate code and description found
         """
         if(back==-1000):
             back=len(codes)-1
