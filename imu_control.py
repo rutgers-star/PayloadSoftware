@@ -114,7 +114,7 @@ def imu_data(imu, yaw0, yawOld):
     Returns:
         int[]: yawNew, pitchNew, rollNew - self explanatory
     """
-    #log(351)
+    log(351)
     data=imu.readline()
     numData=data.decode()
     numData=numData.split(",")

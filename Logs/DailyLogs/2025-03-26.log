@@ -1,0 +1,9 @@
+18:40:49 NEW 0000 - Experiment start 
+18:40:49     0310 - Successfully opened DCE serial connection 
+18:40:49     0311 - Confirmed DCE Startup 
+18:40:49 STP 0001 - Experiment end 
+18:41:17 NEW 0000 - Experiment start 
+18:41:17     0310 - Successfully opened DCE serial connection 
+18:41:17     0311 - Confirmed DCE Startup 
+18:41:17     0303 - Successfully sent command to DCE 
+18:41:17 STP 0001 - Experiment end 
