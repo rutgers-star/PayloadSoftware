@@ -36,7 +36,8 @@ try:
     dce_startup()
 
     filename = f"{str(date.today())}_{str(time.localtime().tm_hour)}-{str(time.localtime().tm_min)}.explog"
-    file = open(filename, "w")
+    file = open(f"{__gExpLogPath}{filename}", "w")
+    file.write("DCE Testing IMU Outputs\n")
 
     if kill:
         set_wheel_speed(1,0)
