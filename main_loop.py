@@ -203,6 +203,7 @@ tstart=time.time()
 
 hardware_startup()
 
+#TODO: better logging
 filename = f"{str(date.today())}_{str(time.localtime().tm_hour)}-{str(time.localtime().tm_min)}.explog"
 file = open(filename, "w")
 file.write("PID Control Loop Outputs\nk    t[k]  theta[k]  err[k] errdot[k] ecumul[k] umotor[k] u[k]\n")

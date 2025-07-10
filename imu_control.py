@@ -98,6 +98,7 @@ def init_imu():
         qOLD=q0;
        
     if (settled == 0):
+        #TODO: Make this not an error
         raise ERROR(1350, "IMU did not settle")
 
     return yaw0, imu
