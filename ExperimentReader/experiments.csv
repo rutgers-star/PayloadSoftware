@@ -1,0 +1,232 @@
+Experiment_#,Phase,Experiment_Name,Angle,Velocity,Mission_Day,Maneuver,Rotation_Axis,Camera,Torque/Force_Sensor,Gyro_Read,Mission_Phase,Objective,Controller
+1,A,MIN1,10,10,1,1-axis,X,On,On,On,Minimum Success,Systems Identification,BCT
+2,A,MIN2,10,24,2,1-axis,X,On,On,On,Minimum Success,Systems Identification,BCT
+3,A,A1,10,8,3,1-axis,X,On,On,On,Full Mission,ML Initial training data,BCT
+4,A,A2,40,8,4,1-axis,X,On,On,On,Full Mission,ML Initial training data,BCT
+5,A,A3,60,8,5,1-axis,X,On,On,On,Full Mission,ML Initial training data,BCT
+6,A,A4,90,8,6,1-axis,X,On,On,On,Full Mission,ML Initial training data,BCT
+7,A,A5,120,8,7,1-axis,X,On,On,On,Full Mission,ML Initial training data,BCT
+8,A,A6,160,8,8,1-axis,X,On,On,On,Full Mission,ML Initial training data,BCT
+9,A,A7,180,8,9,1-axis,X,On,On,On,Full Mission,ML Initial training data,BCT
+10,A,A8,360,8,10,1-axis,X,On,On,On,Full Mission,ML Initial training data,BCT
+11,A,A9,10,10,11,1-axis,X,On,On,On,Full Mission,ML Initial training data,BCT
+12,A,A10,40,10,12,1-axis,X,On,On,On,Full Mission,ML Initial training data,BCT
+13,A,A11,60,10,13,1-axis,X,On,On,On,Full Mission,ML Initial training data,BCT
+14,A,A12,90,10,14,1-axis,X,On,On,On,Full Mission,ML Initial training data,BCT
+15,A,A13,120,10,15,1-axis,X,On,On,On,Full Mission,ML Initial training data,BCT
+16,A,A14,160,10,16,1-axis,X,On,On,On,Full Mission,ML Initial training data,BCT
+17,A,A15,180,10,17,1-axis,X,On,On,On,Full Mission,ML Initial training data,BCT
+18,A,A16,360,10,18,1-axis,X,On,On,On,Full Mission,ML Initial training data,BCT
+19,A,A17,10,15,19,1-axis,X,On,On,On,Full Mission,ML Initial training data,BCT
+20,A,A18,40,15,20,1-axis,X,On,On,On,Full Mission,ML Initial training data,BCT
+21,A,A19,60,15,21,1-axis,X,On,On,On,Full Mission,ML Initial training data,BCT
+22,A,A20,90,15,22,1-axis,X,On,On,On,Full Mission,ML Initial training data,BCT
+23,A,A21,120,15,23,1-axis,X,On,On,On,Full Mission,ML Initial training data,BCT
+24,A,A22,160,15,24,1-axis,X,On,On,On,Full Mission,ML Initial training data,BCT
+25,A,A23,180,15,25,1-axis,X,On,On,On,Full Mission,ML Initial training data,BCT
+26,A,A24,360,15,26,1-axis,X,On,On,On,Full Mission,ML Initial training data,BCT
+27,A,A25,10,18,27,1-axis,X,On,On,On,Full Mission,ML Initial training data,BCT
+28,A,A26,40,18,28,1-axis,X,On,On,On,Full Mission,ML Initial training data,BCT
+29,A,A27,60,18,29,1-axis,X,On,On,On,Full Mission,ML Initial training data,BCT
+30,A,A28,90,18,30,1-axis,X,On,On,On,Full Mission,ML Initial training data,BCT
+31,A,A29,120,18,31,1-axis,X,On,On,On,Full Mission,ML Initial training data,BCT
+32,A,A30,160,18,32,1-axis,X,On,On,On,Full Mission,ML Initial training data,BCT
+33,A,A31,180,18,33,1-axis,X,On,On,On,Full Mission,ML Initial training data,BCT
+34,A,A32,360,18,34,1-axis,X,On,On,On,Full Mission,ML Initial training data,BCT
+35,A,A33,10,24,35,1-axis,X,On,On,On,Full Mission,ML Initial training data,BCT
+36,A,A34,40,24,36,1-axis,X,On,On,On,Full Mission,ML Initial training data,BCT
+37,A,A35,60,24,37,1-axis,X,On,On,On,Full Mission,ML Initial training data,BCT
+38,A,A36,90,24,38,1-axis,X,On,On,On,Full Mission,ML Initial training data,BCT
+39,A,A37,120,24,39,1-axis,X,On,On,On,Full Mission,ML Initial training data,BCT
+40,A,A38,160,24,40,1-axis,X,On,On,On,Full Mission,ML Initial training data,BCT
+41,A,A39,180,24,41,1-axis,X,On,On,On,Full Mission,ML Initial training data,BCT
+42,A,A40,360,24,42,1-axis,X,On,On,On,Full Mission,ML Initial training data,BCT
+43,A,A41,360,24,43,1-axis,X,On,On,On,Full Mission,Excite --> Observe,BCT
+44,A,A42,360,24,44,1-axis,X,Off,On,On,Full Mission,Excite --> Observe,BCT
+45,A,A43,360,24,45,1-axis,X,Off,On,On,Full Mission,Excite --> Observe,BCT
+46,A,A44,360,24,46,1-axis,Y,On,On,On,Full Mission,Excite --> Observe,BCT
+47,A,A45,360,24,47,1-axis,Y,Off,On,On,Full Mission,Excite --> Observe,BCT
+48,A,A46,360,24,48,1-axis,Y,Off,On,On,Full Mission,Excite --> Observe,BCT
+49,A,A47,360,24,49,1-axis,Z,On,On,On,Full Mission,Excite --> Observe,BCT
+50,A,A48,360,24,50,1-axis,Z,Off,On,On,Full Mission,Excite --> Observe,BCT
+51,A,A49,360,24,51,1-axis,Z,Off,On,On,Full Mission,Excite --> Observe,BCT
+52,A,A50,360,24,52,2-axis,XY,On,On,On,Full Mission,Excite --> Observe,BCT
+53,A,A51,360,24,53,2-axis,XY,Off,On,On,Full Mission,Excite --> Observe,BCT
+54,A,A52,360,24,54,2-axis,XY,Off,On,On,Full Mission,Excite --> Observe,BCT
+55,A,A53,360,24,55,2-axis,XZ,On,On,On,Full Mission,Excite --> Observe,BCT
+56,A,A54,360,24,56,2-axis,XZ,Off,On,On,Full Mission,Excite --> Observe,BCT
+57,A,A55,360,24,57,2-axis,XZ,Off,On,On,Full Mission,Excite --> Observe,BCT
+58,A,A56,360,24,58,2-axis,YZ,On,On,On,Full Mission,Excite --> Observe,BCT
+59,A,A57,360,24,59,2-axis,YZ,Off,On,On,Full Mission,Excite --> Observe,BCT
+60,A,A58,360,24,60,2-axis,YZ,Off,On,On,Full Mission,Excite --> Observe,BCT
+61,A,A59,360,24,61,3-axis,XYZ,On,On,On,Full Mission,Excite --> Observe,BCT
+62,A,A60,360,24,62,3-axis,XYZ,Off,On,On,Full Mission,Excite --> Observe,BCT
+63,A,A61,360,24,63,3-axis,XYZ,Off,On,On,Full Mission,Excite --> Observe,BCT
+64,B,B1,360,24,64,1-axis,X,On,On,On,Full Mission,Excite --> Observe,Output Feedback
+65,B,B2,360,24,65,1-axis,X,Off,On,On,Full Mission,Excite --> Observe,Output Feedback
+66,B,B3,360,24,66,1-axis,X,Off,On,On,Full Mission,Excite --> Observe,Output Feedback
+67,B,B4,360,24,67,1-axis,Y,On,On,On,Full Mission,Excite --> Observe,Output Feedback
+68,B,B5,360,24,68,1-axis,Y,Off,On,On,Full Mission,Excite --> Observe,Output Feedback
+69,B,B6,360,24,69,1-axis,Y,Off,On,On,Full Mission,Excite --> Observe,Output Feedback
+70,B,B7,360,24,70,1-axis,Z,On,On,On,Full Mission,Excite --> Observe,Output Feedback
+71,B,B8,360,24,71,1-axis,Z,Off,On,On,Full Mission,Excite --> Observe,Output Feedback
+72,B,B9,360,24,72,1-axis,Z,Off,On,On,Full Mission,Excite --> Observe,Output Feedback
+73,B,B10,360,24,73,1-axis,X,On,On,On,Full Mission,Excite --> Mitigate,Output Feedback
+74,B,B11,360,24,74,1-axis,X,Off,On,On,Full Mission,Excite --> Mitigate,Output Feedback
+75,B,B12,360,24,75,1-axis,X,Off,On,On,Full Mission,Excite --> Mitigate,Output Feedback
+76,B,B13,360,24,76,1-axis,Y,On,On,On,Full Mission,Excite --> Mitigate,Output Feedback
+77,B,B14,360,24,77,1-axis,Y,Off,On,On,Full Mission,Excite --> Mitigate,Output Feedback
+78,B,B15,360,24,78,1-axis,Y,Off,On,On,Full Mission,Excite --> Mitigate,Output Feedback
+79,B,B16,360,24,79,1-axis,Z,On,On,On,Full Mission,Excite --> Mitigate,Output Feedback
+80,B,B17,360,24,80,1-axis,Z,Off,On,On,Full Mission,Excite --> Mitigate,Output Feedback
+81,B,B18,360,24,81,1-axis,Z,Off,On,On,Full Mission,Excite --> Mitigate,Output Feedback
+82,B,B19,360,24,82,2-axis,XY,On,On,On,Full Mission,Excite --> Observe,Output Feedback
+83,B,B20,360,24,83,2-axis,XY,Off,On,On,Full Mission,Excite --> Observe,Output Feedback
+84,B,B21,360,24,84,2-axis,XY,Off,On,On,Full Mission,Excite --> Observe,Output Feedback
+85,B,B22,360,24,85,2-axis,XZ,On,On,On,Full Mission,Excite --> Observe,Output Feedback
+86,B,B23,360,24,86,2-axis,XZ,Off,On,On,Full Mission,Excite --> Observe,Output Feedback
+87,B,B24,360,24,87,2-axis,XZ,Off,On,On,Full Mission,Excite --> Observe,Output Feedback
+88,B,B25,360,24,88,2-axis,YZ,On,On,On,Full Mission,Excite --> Observe,Output Feedback
+89,B,B26,360,24,89,2-axis,YZ,Off,On,On,Full Mission,Excite --> Observe,Output Feedback
+90,B,B27,360,24,90,2-axis,YZ,Off,On,On,Full Mission,Excite --> Observe,Output Feedback
+91,B,B28,360,24,91,2-axis,XY,On,On,On,Full Mission,Excite --> Mitigate,Output Feedback
+92,B,B29,360,24,92,2-axis,XY,Off,On,On,Full Mission,Excite --> Mitigate,Output Feedback
+93,B,B30,360,24,93,2-axis,XY,Off,On,On,Full Mission,Excite --> Mitigate,Output Feedback
+94,B,B31,360,24,94,2-axis,XZ,On,On,On,Full Mission,Excite --> Mitigate,Output Feedback
+95,B,B32,360,24,95,2-axis,XZ,Off,On,On,Full Mission,Excite --> Mitigate,Output Feedback
+96,B,B33,360,24,96,2-axis,XZ,Off,On,On,Full Mission,Excite --> Mitigate,Output Feedback
+97,B,B34,360,24,97,2-axis,YZ,On,On,On,Full Mission,Excite --> Mitigate,Output Feedback
+98,B,B35,360,24,98,2-axis,YZ,Off,On,On,Full Mission,Excite --> Mitigate,Output Feedback
+99,B,B36,360,24,99,2-axis,YZ,Off,On,On,Full Mission,Excite --> Mitigate,Output Feedback
+100,B,B37,360,24,100,3-axis,ZYX,On,On,On,Full Mission,Excite --> Observe,Output Feedback
+101,B,B38,360,24,101,3-axis,ZYX,Off,On,On,Full Mission,Excite --> Observe,Output Feedback
+102,B,B39,360,24,102,3-axis,ZYX,Off,On,On,Full Mission,Excite --> Observe,Output Feedback
+103,B,B40,360,24,103,3-axis,ZYX,On,On,On,Full Mission,Excite --> Mitigate,Output Feedback
+104,B,B41,360,24,104,3-axis,ZYX,Off,On,On,Full Mission,Excite --> Mitigate,Output Feedback
+105,B,B42,360,24,105,3-axis,ZYX,Off,On,On,Full Mission,Excite --> Mitigate,Output Feedback
+106,C,C1,360,24,106,1-axis,X,On,On,On,Full Mission,Excite --> Observe,ML Controller
+107,C,C2,360,24,107,1-axis,X,Off,On,On,Full Mission,Excite --> Observe,ML Controller
+108,C,C3,360,24,108,1-axis,X,Off,On,On,Full Mission,Excite --> Observe,ML Controller
+109,C,C4,360,24,109,1-axis,Y,On,On,On,Full Mission,Excite --> Observe,ML Controller
+110,C,C5,360,24,110,1-axis,Y,Off,On,On,Full Mission,Excite --> Observe,ML Controller
+111,C,C6,360,24,111,1-axis,Y,Off,On,On,Full Mission,Excite --> Observe,ML Controller
+112,C,C7,360,24,112,1-axis,Z,On,On,On,Full Mission,Excite --> Observe,ML Controller
+113,C,C8,360,24,113,1-axis,Z,Off,On,On,Full Mission,Excite --> Observe,ML Controller
+114,C,C9,360,24,114,1-axis,Z,Off,On,On,Full Mission,Excite --> Observe,ML Controller
+115,C,C10,360,24,115,1-axis,X,On,On,On,Full Mission,Excite --> Mitigate,ML Controller
+116,C,C11,360,24,116,1-axis,X,Off,On,On,Full Mission,Excite --> Mitigate,ML Controller
+117,C,C12,360,24,117,1-axis,X,Off,On,On,Full Mission,Excite --> Mitigate,ML Controller
+118,C,C13,360,24,118,1-axis,Y,On,On,On,Full Mission,Excite --> Mitigate,ML Controller
+119,C,C14,360,24,119,1-axis,Y,Off,On,On,Full Mission,Excite --> Mitigate,ML Controller
+120,C,C15,360,24,120,1-axis,Y,Off,On,On,Full Mission,Excite --> Mitigate,ML Controller
+121,C,C16,360,24,121,1-axis,Z,On,On,On,Full Mission,Excite --> Mitigate,ML Controller
+122,C,C17,360,24,122,1-axis,Z,Off,On,On,Full Mission,Excite --> Mitigate,ML Controller
+123,C,C18,360,24,123,1-axis,Z,Off,On,On,Full Mission,Excite --> Mitigate,ML Controller
+124,C,C19,360,24,124,2-axis,XY,On,On,On,Full Mission,Excite --> Observe,ML Controller
+125,C,C20,360,24,125,2-axis,XY,Off,On,On,Full Mission,Excite --> Observe,ML Controller
+126,C,C21,360,24,126,2-axis,XY,Off,On,On,Full Mission,Excite --> Observe,ML Controller
+127,C,C22,360,24,127,2-axis,XZ,On,On,On,Full Mission,Excite --> Observe,ML Controller
+128,C,C23,360,24,128,2-axis,XZ,Off,On,On,Full Mission,Excite --> Observe,ML Controller
+129,C,C24,360,24,129,2-axis,XZ,Off,On,On,Full Mission,Excite --> Observe,ML Controller
+130,C,C25,360,24,130,2-axis,YZ,On,On,On,Full Mission,Excite --> Observe,ML Controller
+131,C,C26,360,24,131,2-axis,YZ,Off,On,On,Full Mission,Excite --> Observe,ML Controller
+132,C,C27,360,24,132,2-axis,YZ,Off,On,On,Full Mission,Excite --> Observe,ML Controller
+133,C,C28,360,24,133,2-axis,XY,On,On,On,Full Mission,Excite --> Mitigate,ML Controller
+134,C,C29,360,24,134,2-axis,XY,Off,On,On,Full Mission,Excite --> Mitigate,ML Controller
+135,C,C30,360,24,135,2-axis,XY,Off,On,On,Full Mission,Excite --> Mitigate,ML Controller
+136,C,C31,360,24,136,2-axis,XZ,On,On,On,Full Mission,Excite --> Mitigate,ML Controller
+137,C,C32,360,24,137,2-axis,XZ,Off,On,On,Full Mission,Excite --> Mitigate,ML Controller
+138,C,C33,360,24,138,2-axis,XZ,Off,On,On,Full Mission,Excite --> Mitigate,ML Controller
+139,C,C34,360,24,139,2-axis,YZ,On,On,On,Full Mission,Excite --> Mitigate,ML Controller
+140,C,C35,360,24,140,2-axis,YZ,Off,On,On,Full Mission,Excite --> Mitigate,ML Controller
+141,C,C36,360,24,141,2-axis,YZ,Off,On,On,Full Mission,Excite --> Mitigate,ML Controller
+142,C,C37,360,24,142,3-axis,ZYX,On,On,On,Full Mission,Excite --> Observe,ML Controller
+143,C,C38,360,24,143,3-axis,ZYX,Off,On,On,Full Mission,Excite --> Observe,ML Controller
+144,C,C39,360,24,144,3-axis,ZYX,Off,On,On,Full Mission,Excite --> Observe,ML Controller
+145,C,C40,360,24,145,3-axis,ZYX,On,On,On,Full Mission,Excite --> Mitigate,ML Controller
+146,C,C41,360,24,146,3-axis,ZYX,Off,On,On,Full Mission,Excite --> Mitigate,ML Controller
+147,C,C42,360,24,147,3-axis,ZYX,Off,On,On,Full Mission,Excite --> Mitigate,ML Controller
+148,D,D1,360,24,148,1-axis,X,On,On,On,Full Mission,Excite --> Observe,Reference Governor
+149,D,D2,360,24,149,1-axis,X,Off,On,On,Full Mission,Excite --> Observe,Reference Governor
+150,D,D3,360,24,150,1-axis,X,Off,On,On,Full Mission,Excite --> Observe,Reference Governor
+151,D,D4,360,24,151,1-axis,Y,On,On,On,Full Mission,Excite --> Observe,Reference Governor
+152,D,D5,360,24,152,1-axis,Y,Off,On,On,Full Mission,Excite --> Observe,Reference Governor
+153,D,D6,360,24,153,1-axis,Y,Off,On,On,Full Mission,Excite --> Observe,Reference Governor
+154,D,D7,360,24,154,1-axis,Z,On,On,On,Full Mission,Excite --> Observe,Reference Governor
+155,D,D8,360,24,155,1-axis,Z,Off,On,On,Full Mission,Excite --> Observe,Reference Governor
+156,D,D9,360,24,156,1-axis,Z,Off,On,On,Full Mission,Excite --> Observe,Reference Governor
+157,D,D10,360,24,157,1-axis,X,On,On,On,Full Mission,Excite --> Mitigate,Reference Governor
+158,D,D11,360,24,158,1-axis,X,Off,On,On,Full Mission,Excite --> Mitigate,Reference Governor
+159,D,D12,360,24,159,1-axis,X,Off,On,On,Full Mission,Excite --> Mitigate,Reference Governor
+160,D,D13,360,24,160,1-axis,Y,On,On,On,Full Mission,Excite --> Mitigate,Reference Governor
+161,D,D14,360,24,161,1-axis,Y,Off,On,On,Full Mission,Excite --> Mitigate,Reference Governor
+162,D,D15,360,24,162,1-axis,Y,Off,On,On,Full Mission,Excite --> Mitigate,Reference Governor
+163,D,D16,360,24,163,1-axis,Z,On,On,On,Full Mission,Excite --> Mitigate,Reference Governor
+164,D,D17,360,24,164,1-axis,Z,Off,On,On,Full Mission,Excite --> Mitigate,Reference Governor
+165,D,D18,360,24,165,1-axis,Z,Off,On,On,Full Mission,Excite --> Mitigate,Reference Governor
+166,D,D19,360,24,166,2-axis,XY,On,On,On,Full Mission,Excite --> Observe,Reference Governor
+167,D,D20,360,24,167,2-axis,XY,Off,On,On,Full Mission,Excite --> Observe,Reference Governor
+168,D,D21,360,24,168,2-axis,XY,Off,On,On,Full Mission,Excite --> Observe,Reference Governor
+169,D,D22,360,24,169,2-axis,XZ,On,On,On,Full Mission,Excite --> Observe,Reference Governor
+170,D,D23,360,24,170,2-axis,XZ,Off,On,On,Full Mission,Excite --> Observe,Reference Governor
+171,D,D24,360,24,171,2-axis,XZ,Off,On,On,Full Mission,Excite --> Observe,Reference Governor
+172,D,D25,360,24,172,2-axis,YZ,On,On,On,Full Mission,Excite --> Observe,Reference Governor
+173,D,D26,360,24,173,2-axis,YZ,Off,On,On,Full Mission,Excite --> Observe,Reference Governor
+174,D,D27,360,24,174,2-axis,YZ,Off,On,On,Full Mission,Excite --> Observe,Reference Governor
+175,D,D28,360,24,175,2-axis,XY,On,On,On,Full Mission,Excite --> Mitigate,Reference Governor
+176,D,D29,360,24,176,2-axis,XY,Off,On,On,Full Mission,Excite --> Mitigate,Reference Governor
+177,D,D30,360,24,177,2-axis,XY,Off,On,On,Full Mission,Excite --> Mitigate,Reference Governor
+178,D,D31,360,24,178,2-axis,XZ,On,On,On,Full Mission,Excite --> Mitigate,Reference Governor
+179,D,D32,360,24,179,2-axis,XZ,Off,On,On,Full Mission,Excite --> Mitigate,Reference Governor
+180,D,D33,360,24,180,2-axis,XZ,Off,On,On,Full Mission,Excite --> Mitigate,Reference Governor
+181,D,D34,360,24,181,2-axis,YZ,On,On,On,Full Mission,Excite --> Mitigate,Reference Governor
+182,D,D35,360,24,182,2-axis,YZ,Off,On,On,Full Mission,Excite --> Mitigate,Reference Governor
+183,D,D36,360,24,183,2-axis,YZ,Off,On,On,Full Mission,Excite --> Mitigate,Reference Governor
+184,D,D37,360,24,184,3-axis,ZYX,On,On,On,Full Mission,Excite --> Observe,Reference Governor
+185,D,D38,360,24,185,3-axis,ZYX,Off,On,On,Full Mission,Excite --> Observe,Reference Governor
+186,D,D39,360,24,186,3-axis,ZYX,Off,On,On,Full Mission,Excite --> Observe,Reference Governor
+187,D,D40,360,24,187,3-axis,ZYX,On,On,On,Full Mission,Excite --> Mitigate,Reference Governor
+188,D,D41,360,24,188,3-axis,ZYX,Off,On,On,Full Mission,Excite --> Mitigate,Reference Governor
+189,D,D42,360,24,189,3-axis,ZYX,Off,On,On,Full Mission,Excite --> Mitigate,Reference Governor
+190,E,E1,360,24,190,1-axis,X,On,On,On,Full Mission,Excite --> Observe,Output+ML+RG
+191,E,E2,360,24,191,1-axis,X,Off,On,On,Full Mission,Excite --> Observe,Output+ML+RG
+192,E,E3,360,24,192,1-axis,X,Off,On,On,Full Mission,Excite --> Observe,Output+ML+RG
+193,E,E4,360,24,193,1-axis,Y,On,On,On,Full Mission,Excite --> Observe,Output+ML+RG
+194,E,E5,360,24,194,1-axis,Y,Off,On,On,Full Mission,Excite --> Observe,Output+ML+RG
+195,E,E6,360,24,195,1-axis,Y,Off,On,On,Full Mission,Excite --> Observe,Output+ML+RG
+196,E,E7,360,24,196,1-axis,Z,On,On,On,Full Mission,Excite --> Observe,Output+ML+RG
+197,E,E8,360,24,197,1-axis,Z,Off,On,On,Full Mission,Excite --> Observe,Output+ML+RG
+198,E,E9,360,24,198,1-axis,Z,Off,On,On,Full Mission,Excite --> Observe,Output+ML+RG
+199,E,E10,360,24,199,1-axis,X,On,On,On,Full Mission,Excite --> Mitigate,Output+ML+RG
+200,E,E11,360,24,200,1-axis,X,Off,On,On,Full Mission,Excite --> Mitigate,Output+ML+RG
+201,E,E12,360,24,201,1-axis,X,Off,On,On,Full Mission,Excite --> Mitigate,Output+ML+RG
+202,E,E13,360,24,202,1-axis,Y,On,On,On,Full Mission,Excite --> Mitigate,Output+ML+RG
+203,E,E14,360,24,203,1-axis,Y,Off,On,On,Full Mission,Excite --> Mitigate,Output+ML+RG
+204,E,E15,360,24,204,1-axis,Y,Off,On,On,Full Mission,Excite --> Mitigate,Output+ML+RG
+205,E,E16,360,24,205,1-axis,Z,On,On,On,Full Mission,Excite --> Mitigate,Output+ML+RG
+206,E,E17,360,24,206,1-axis,Z,Off,On,On,Full Mission,Excite --> Mitigate,Output+ML+RG
+207,E,E18,360,24,207,1-axis,Z,Off,On,On,Full Mission,Excite --> Mitigate,Output+ML+RG
+208,E,E19,360,24,208,2-axis,XY,On,On,On,Full Mission,Excite --> Observe,Output+ML+RG
+209,E,E20,360,24,209,2-axis,XY,Off,On,On,Full Mission,Excite --> Observe,Output+ML+RG
+210,E,E21,360,24,210,2-axis,XY,Off,On,On,Full Mission,Excite --> Observe,Output+ML+RG
+211,E,E22,360,24,211,2-axis,XZ,On,On,On,Full Mission,Excite --> Observe,Output+ML+RG
+212,E,E23,360,24,212,2-axis,XZ,Off,On,On,Full Mission,Excite --> Observe,Output+ML+RG
+213,E,E24,360,24,213,2-axis,XZ,Off,On,On,Full Mission,Excite --> Observe,Output+ML+RG
+214,E,E25,360,24,214,2-axis,YZ,On,On,On,Full Mission,Excite --> Observe,Output+ML+RG
+215,E,E26,360,24,215,2-axis,YZ,Off,On,On,Full Mission,Excite --> Observe,Output+ML+RG
+216,E,E27,360,24,216,2-axis,YZ,Off,On,On,Full Mission,Excite --> Observe,Output+ML+RG
+217,E,E28,360,24,217,2-axis,XY,On,On,On,Full Mission,Excite --> Mitigate,Output+ML+RG
+218,E,E29,360,24,218,2-axis,XY,Off,On,On,Full Mission,Excite --> Mitigate,Output+ML+RG
+219,E,E30,360,24,219,2-axis,XY,Off,On,On,Full Mission,Excite --> Mitigate,Output+ML+RG
+220,E,E31,360,24,220,2-axis,XZ,On,On,On,Full Mission,Excite --> Mitigate,Output+ML+RG
+221,E,E32,360,24,221,2-axis,XZ,Off,On,On,Full Mission,Excite --> Mitigate,Output+ML+RG
+222,E,E33,360,24,222,2-axis,XZ,Off,On,On,Full Mission,Excite --> Mitigate,Output+ML+RG
+223,E,E34,360,24,223,2-axis,YZ,On,On,On,Full Mission,Excite --> Mitigate,Output+ML+RG
+224,E,E35,360,24,224,2-axis,YZ,Off,On,On,Full Mission,Excite --> Mitigate,Output+ML+RG
+225,E,E36,360,24,225,2-axis,YZ,Off,On,On,Full Mission,Excite --> Mitigate,Output+ML+RG
+226,E,E37,360,24,226,3-axis,ZYX,On,On,On,Full Mission,Excite --> Observe,Output+ML+RG
+227,E,E38,360,24,227,3-axis,ZYX,Off,On,On,Full Mission,Excite --> Observe,Output+ML+RG
+228,E,E39,360,24,228,3-axis,ZYX,Off,On,On,Full Mission,Excite --> Observe,Output+ML+RG
+229,E,E40,360,24,229,3-axis,ZYX,On,On,On,Full Mission,Excite --> Mitigate,Output+ML+RG
+230,E,E41,360,24,230,3-axis,ZYX,Off,On,On,Full Mission,Excite --> Mitigate,Output+ML+RG
+231,E,E42,360,24,231,3-axis,ZYX,Off,On,On,Full Mission,Excite --> Mitigate,Output+ML+RG

@@ -27,6 +27,7 @@ from camera_control import init_camera, close_camera
 from control import PID_control
 from plot_tools import plot_sloshy
 from dce_control import set_wheel_torque, set_wheel_speed, dce_startup, read_data
+from ExperimentReader.get_experiment import get_experiment, Experiment
 
 from Logs.log import log
 from Logs.errors import ERROR
@@ -44,10 +45,11 @@ SPINNING=False          # Whether or not the wheel is currently spinning. DO NOT
 
 __gExpLogPath="Logs/ExpLogs/"
 
-def hardware_startup():
+def hardware_startup(experiment: Experiment):
     """
     Opens all connections to necessary hardware. If an error occurs, program exits and codes are logged
     """
+    global CAMERA
     ########### PRESSURE SENSOR STARTUP CODE BEGIN ##############
 
     #EMPTY FOR NOW
@@ -74,9 +76,12 @@ def hardware_startup():
 
     ########### IMU STARTUP CODE END ###########
 
-    ########### CAMERA STARTUP CODE BEGIN ###########
-    
-    if CAMERA:
+    ########### CAMERA STARTUP CODE BEGIN ########### 
+    #TODO: don't change constant find another way to validate in end_experiment
+    if not experiment.camera:
+        CAMERA = False
+        
+    if CAMERA and experiment.camera:
         try:
             init_camera()
         except ERROR:
@@ -116,30 +121,6 @@ def end_experiment(error=False):
     else:
         log(1)
     exit()
-
-#TODO: Documentation
-def experiment_reader(experiment_name):
-    """
-    
-    Returns:
-        LocIndexerFrame: an "array" which contains fields accessed by name (ex. arr["Experiment #"])
-        \n\tValues include: 
-        -Experiment #
-        -Phase
-        -Angle
-        -Velocity
-        -Mission Day
-        -Maneuver
-        -Rotation Axis
-        -Camera
-        -Controller
-    """
-    filename='Experiment Design.xlsx'
-    sheet='Experiment Design V2'
-    cols=[1,2,3,4,5,6,7,8,9,12]
-
-    dataframe = pd.read_excel(filename, sheet_name=sheet, usecols=cols, header=1, nrows=234, index_col=2)
-    return dataframe.loc[experiment_name]
 
 ########### INITIAL VALUE CALCULATIONS START ###########
 log(0)
@@ -201,52 +182,76 @@ ecumul[1]=0
 tstart=time.time()
 ########### INITIAL VALUE CALCULATIONS END ###########
 
-hardware_startup()
+def start_experiment(experiment_num: int):
+    global k, yawOld
 
-#TODO: better logging
-filename = f"{str(date.today())}_{str(time.localtime().tm_hour)}-{str(time.localtime().tm_min)}.explog"
-file = open(filename, "w")
-file.write("PID Control Loop Outputs\nk    t[k]  theta[k]  err[k] errdot[k] ecumul[k] umotor[k] u[k]\n")
-
-
-########### MAIN CONTROL LOOP START ###########
-while (k < MAX_ITER):
-    print(k)
-    t[k]=time.time() - tstart
-    dt=t[k] - t[k-1]
-    
-    # Get IMU data
-    yaw,pitch,roll=imu_data(imu,yaw0,yawOld)
-    theta[k]=yaw
-    vel[k] = (theta[k]) - theta[k-1]/dt
-    acc[k]=(vel[k] - vel[k-1])/dt
-    err[k]=(theta[k] - theta_d)
-    errdot[k]=(err[k] - err[k-1])/dt
-    ecumul[k]=ecumul[k-1] + err[k]*dt
-
-    # Control Algorithm Using PID Controller
-    u[k] = PID_control(theta_d, k, t, dt, I, J, theta, vel, acc, err, errdot, ecumul)
-
-    #write data for current timestep to log file
-    file.write("%5.0i    %4.3f  %10.2f  %10.2f %10.2f %10.2f %10.2f %10.2f\n" % (k,t[k], theta[k], err[k], errdot[k], ecumul[k], umotor[k], u[k]))
-
-    #Drive the Motor
-    try:
-        set_wheel_torque(1, u[k])
-        umotor[k] = read_data('TORQUE')[0][0]
-        SPINNING = True
-    except ERROR:
+    experiment = get_experiment(experiment_num)
+    print(f"Got Experiment:\n{experiment}")
+    if experiment == None:
+        #TODO: Throw an actual error here
         end_experiment(True)
+        return
+
+    axes = list(experiment.rotation_axis)
+    #TODO: Add multi axis support
+    if len(axes) > 1:
+        print("Experiment with more than one axis not supported")
+        end_experiment(True)
+        return
+
+    axis_map = {'X': 1, 'Y': 2, 'Z': 3}
+    
+    theta_d = experiment.angle
+
+    hardware_startup(experiment)
+
+    #TODO: better logging
+    filename = f"{str(date.today())}_{str(time.localtime().tm_hour)}-{str(time.localtime().tm_min)}.explog"
+    file = open(filename, "w")
+    file.write("PID Control Loop Outputs\nk    t[k]  theta[k]  err[k] errdot[k] ecumul[k] umotor[k] u[k]\n")
+
+
+    ########### MAIN CONTROL LOOP START ###########
+    while (k < MAX_ITER):
+        print(k)
+        t[k]=time.time() - tstart
+        dt=t[k] - t[k-1]
         
-    #TODO: Update this for new motor
-    time.sleep(0.025) # Good as of 11/5/2023 10:51 am
+        # Get IMU data
+        yaw,pitch,roll=imu_data(imu,yaw0,yawOld)
+        theta[k]=yaw
+        vel[k] = (theta[k]) - theta[k-1]/dt
+        acc[k]=(vel[k] - vel[k-1])/dt
+        err[k]=(theta[k] - theta_d)
+        errdot[k]=(err[k] - err[k-1])/dt
+        ecumul[k]=ecumul[k-1] + err[k]*dt
 
-    if (k > 10): 
-        meantheta=np.mean(theta[k-10:k])
+        # Control Algorithm Using PID Controller
+        u[k] = PID_control(theta_d, k, t, dt, I, J, theta, vel, acc, err, errdot, ecumul)
 
-    yawOld=theta[k]
-    k=k+1
+        #write data for current timestep to log file
+        file.write("%5.0i    %4.3f  %10.2f  %10.2f %10.2f %10.2f %10.2f %10.2f\n" % (k,t[k], theta[k], err[k], errdot[k], ecumul[k], umotor[k], u[k]))
 
-########### MAIN CONTROL LOOP END ###########
+        #Drive the Motor
+        try:
+            #TODO: This only sets it for one axis, change it to set it for all axes
+            set_wheel_torque(axis_map[axes[0]], u[k])
+            umotor[k] = read_data('TORQUE')[0][0]
+            SPINNING = True
+        except ERROR:
+            end_experiment(True)
+            
+        #TODO: Update this for new motor
+        time.sleep(0.025) # Good as of 11/5/2023 10:51 am
 
-end_experiment()
+        if (k > 10): 
+            meantheta=np.mean(theta[k-10:k])
+
+        yawOld=theta[k]
+        k=k+1
+
+    ########### MAIN CONTROL LOOP END ###########
+
+    end_experiment()
+
+start_experiment(1)
