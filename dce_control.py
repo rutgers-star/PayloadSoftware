@@ -130,7 +130,6 @@ def convert_from_hex(parameter_hex:str, conversion_factor=1.0):
 
     return ret * conversion_factor
 
-#FIXME: When writing to one wheel, read from DCE to fill in missing values
 def set_wheel_torque(wheel_num:int, wheel_rate:float):
     """
     Generates and sends a code to the DCE to set the torque on one or all of the reaction wheels.
@@ -177,12 +176,23 @@ def set_wheel_torque(wheel_num:int, wheel_rate:float):
             wheelSet[2+(4 * (i - 1))] = int(parameter_hex[4:6], 16)
             wheelSet[3+(4 * (i - 1))] = int(parameter_hex[6:], 16)
         
-    else: # if a specific wheel num is selected, update that specific wheel
+    else: 
+        #Get the previous values in the reaction wheels
+        wheel_arr, ret_actual, ret_command = read_data("TORQUE")
+        # if a specific wheel num is selected, update that specific wheel
         # breaks the hex values into groups of two
-        wheelSet[0+(4 * (wheel_num - 1))] = int("0x"+parameter_hex[:2], 16)
-        wheelSet[1+(4 * (wheel_num - 1))] = int("0x"+parameter_hex[2:4], 16)
-        wheelSet[2+(4 * (wheel_num - 1))] = int("0x"+parameter_hex[4:6], 16)
-        wheelSet[3+(4 * (wheel_num - 1))] = int("0x"+parameter_hex[6:], 16)
+        for i in range(1, 5):
+            if i == wheel_num:
+                wheelSet[0+(4 * (i - 1))] = int("0x"+parameter_hex[:2], 16)
+                wheelSet[1+(4 * (i - 1))] = int("0x"+parameter_hex[2:4], 16)
+                wheelSet[2+(4 * (i - 1))] = int("0x"+parameter_hex[4:6], 16)
+                wheelSet[3+(4 * (i - 1))] = int("0x"+parameter_hex[6:], 16)
+            else:
+                wheel_hex = convert_to_hex(wheel_arr[i - 1], 8, universal["TORQUE_WRITE_CONV"][0])
+                wheelSet[0+(4 * (i - 1))] = int("0x"+wheel_hex[:2], 16)
+                wheelSet[1+(4 * (i - 1))] = int("0x"+wheel_hex[2:4], 16)
+                wheelSet[2+(4 * (i - 1))] = int("0x"+wheel_hex[4:6], 16)
+                wheelSet[3+(4 * (i - 1))] = int("0x"+wheel_hex[6:], 16)
 
     command.extend(wheelSet)
 
@@ -195,7 +205,6 @@ def set_wheel_torque(wheel_num:int, wheel_rate:float):
     _send_command(ret)
     return ret
 
-#FIXME: When writing to one wheel, read from DCE to fill in missing values
 def set_wheel_speed(wheel_num:int, wheel_rate:float):
     """
     Generates and sends a code to the DCE to set the speed of one or all of the reaction wheels.
@@ -242,8 +251,16 @@ def set_wheel_speed(wheel_num:int, wheel_rate:float):
         
     else: # if a specific wheel num is selected, update that specific wheel
         # breaks the hex values into groups of two
-        wheelSet[0 + (2 * (wheel_num - 1))] = int("0x"+parameter_hex[:2], 16)
-        wheelSet[1 + (2 * (wheel_num - 1))] = int("0x"+parameter_hex[2:], 16)
+        #Get the previous values in the reaction wheels
+        wheel_arr, ret_actual, ret_command = read_data("SPEED")
+        for i in range(1,5):
+            if i == wheel_num:
+                wheelSet[0 + (2 * (i- 1))] = int("0x"+parameter_hex[:2], 16)
+                wheelSet[1 + (2 * (i- 1))] = int("0x"+parameter_hex[2:], 16)
+            else:
+                wheel_hex = convert_to_hex(wheel_arr[i - 1], 4, universal["SPEED_WRITE_CONV"][0])
+                wheelSet[0 + (2 * (i- 1))] = int("0x"+wheel_hex[:2], 16)
+                wheelSet[1 + (2 * (i- 1))] = int("0x"+wheel_hex[2:], 16)
     
     command.extend(wheelSet)
 
