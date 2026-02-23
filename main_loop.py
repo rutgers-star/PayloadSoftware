@@ -51,6 +51,7 @@ def hardware_startup(experiment: Experiment):
     Opens all connections to necessary hardware. If an error occurs, program exits and codes are logged
     """
     global CAMERA
+    CAMERA = experiment.camera
     ########### PRESSURE SENSOR STARTUP CODE BEGIN ##############
 
     #EMPTY FOR NOW
@@ -79,10 +80,8 @@ def hardware_startup(experiment: Experiment):
 
     ########### CAMERA STARTUP CODE BEGIN ########### 
     #TODO: don't change constant find another way to validate in end_experiment
-    if not experiment.camera:
-        CAMERA = False
         
-    if CAMERA and experiment.camera:
+    if CAMERA:
         try:
             init_led(pin=17)        
             init_camera()

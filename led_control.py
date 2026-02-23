@@ -18,7 +18,8 @@ def init_led(pin: int = 17):
     """
     Initialize the LED
     
-    
+    Raises
+        ERROR(1500): Failed to start LED
     """
     log(500) #Setting up LED
 
