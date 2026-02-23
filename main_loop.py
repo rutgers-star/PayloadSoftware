@@ -27,6 +27,7 @@ from camera_control import init_camera, close_camera
 from control import PID_control
 from plot_tools import plot_sloshy
 from dce_control import set_wheel_torque, set_wheel_speed, dce_startup, read_data
+from led_control import init_led, led_off, led_on, close_led
 from ExperimentReader.get_experiment import get_experiment, Experiment
 
 from Logs.log import log
@@ -83,7 +84,9 @@ def hardware_startup(experiment: Experiment):
         
     if CAMERA and experiment.camera:
         try:
+            init_led(pin=17)        
             init_camera()
+            led_on()
         except ERROR:
             end_experiment(True)
     else:
@@ -100,6 +103,7 @@ def end_experiment(error=False):
     """
     if(CAMERA):
         close_camera()
+        close_led()
 
     if(SPINNING):
         try:

@@ -55,9 +55,14 @@ __codes__ = {
         400: ["Starting Camera", True],
         401: ["Camera Started", False],
         402: ["Closing Camera", True],
-        403: ["Camera Closed", False]
+        403: ["Camera Closed", False],
 
-    #N/A 0500-0599
+    #LED Events 0500-0599
+        500: ["Setting up LED", False],
+        501: ["LED initialized", False],
+        502: ["Turning on LED", True],
+        503: ["Turning off LED", True],
+        504: ["Cleaning up GPIO pins", False]
 
     #N/A 0600-0699
 

@@ -56,6 +56,10 @@ class ERROR(BaseException):
         "1400 - Failed to start camera"
     ]
 
+    __LED_codes = [     # 15XX
+        "1500 - Failed to start LED"
+    ]
+
     def __init__(self, code, context=""):
         """
         Initializes the error to be thrown. Finds the proper error message for the given code
@@ -75,6 +79,8 @@ class ERROR(BaseException):
             case 3:
                 codes=self.__ADCS_codes
             case 4:
+                codes=self.__SNSR_codes
+            case 5:
                 codes=self.__SNSR_codes
             case _:
                 codes=self.__EXP_codes
