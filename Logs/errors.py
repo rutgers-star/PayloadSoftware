@@ -53,7 +53,16 @@ class ERROR(BaseException):
     ]
 
     __SNSR_codes = [    # 14XX
-        "1400 - Failed to start camera"
+        "1400 - Failed to start camera",
+
+        "1410 - Torque sensor: Failed to configure driver",
+        "1411 - Torque sensor: Failed to tare sensor",
+        "1412 - Torque sensor: Failed to activate driver",
+        "1413 - Failed to start torque sensor",
+        "1414 - Failed to read from torque sensor",
+        "1415 - Torque sensor: Failed to deactivate driver",
+        "1416 - Torque sensor: Failed to shutdown driver",
+        "1417 - Torque sensor failed to stop"
     ]
 
     __LED_codes = [     # 15XX

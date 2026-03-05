@@ -28,6 +28,7 @@ from control import PID_control
 from plot_tools import plot_sloshy
 from dce_control import set_wheel_torque, set_wheel_speed, dce_startup, read_data
 from led_control import init_led, led_off, led_on, close_led
+from sensor_control import sensor_start, sensor_read, sensor_stop
 from ExperimentReader.get_experiment import get_experiment, Experiment
 
 from Logs.log import log
@@ -62,6 +63,12 @@ def hardware_startup(experiment: Experiment):
 
     try:
         dce_startup()
+    except ERROR:
+        end_experiment(True)
+
+    global bota_ft_sensor_driver
+    try:
+        bota_ft_sensor_driver = sensor_start("bota_binary_gen0.json")
     except ERROR:
         end_experiment(True)
 
@@ -100,8 +107,10 @@ def end_experiment(error=False):
     Args:
         error (bool): true if error occured, false (default) if not
     """
+    sensor_stop(bota_ft_sensor_driver)
     if(CAMERA):
         close_camera()
+        led_off()
         close_led()
 
     if(SPINNING):
@@ -172,6 +181,8 @@ errdot=np.empty(MAX_ITER)
 ecumul=np.empty(MAX_ITER)
 u=np.empty(MAX_ITER)
 umotor=np.empty(MAX_ITER)
+force = np.empty((MAX_ITER,3))
+torque = np.empty((MAX_ITER,3))
 
 # Initial conditions on key variables
 meantheta=0
@@ -232,6 +243,8 @@ def start_experiment(experiment_num: int):
         # Control Algorithm Using PID Controller
         u[k] = PID_control(theta_d, k, t, dt, I, J, theta, vel, acc, err, errdot, ecumul)
 
+        [s,force[k,:],torque[k,:]] = sensor_read(bota_ft_sensor_driver)
+        print(f"k: {k}\nForce: {force[k]}\nTorque: {torque[k]}\n")
         #write data for current timestep to log file
         file.write("%5.0i    %4.3f  %10.2f  %10.2f %10.2f %10.2f %10.2f %10.2f\n" % (k,t[k], theta[k], err[k], errdot[k], ecumul[k], umotor[k], u[k]))
 

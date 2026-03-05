@@ -57,8 +57,15 @@ __codes__ = {
         402: ["Closing Camera", True],
         403: ["Camera Closed", False],
 
+        #Torque sensor
+        410: ["Starting torque sensor", True],
+        411: ["Torque sensor started", False],
+        412: ["Reading from torque sensor", True],
+        413: ["Shutting down torque sensor", True],
+        414: ["Torque sensor successfully shut down", False],
+
     #LED Events 0500-0599
-        500: ["Setting up LED", False],
+        500: ["Setting up LED", True],
         501: ["LED initialized", False],
         502: ["Turning on LED", True],
         503: ["Turning off LED", True],
