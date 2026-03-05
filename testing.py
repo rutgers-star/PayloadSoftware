@@ -1,15 +1,17 @@
-import pandas as pd
+import numpy as np
+from sensor_control import sensor_start, sensor_read, sensor_stop
 
-print("hi")
+k = 1
+maxiter = 100
+force = np.zeros((maxiter,3))
+torque = np.zeros((maxiter,3))
+status = np.zeros((maxiter,3))
 
-filename='Experiment Design.xlsx'
-sheet='Experiment Design V2'
-cols=[1,2,3,4,5,6,7,8,9, 12]
+bota_ft_sensor_driver = sensor_start("bota_binary_gen0.json")
 
-dataframe = pd.read_excel(filename, sheet_name=sheet, usecols=cols, header=1, nrows=234, index_col=2)
+while k < maxiter:
+    [s,force[k,:],torque[k,:]] = sensor_read(bota_ft_sensor_driver)
+    print(f"iter: {k}\nForce: {force[k]}\n Torque: {torque[k]}\n")
+    k += 1
 
-print(dataframe)
-
-print("done")
-
-print(dataframe.loc["A2"]["Angle"])
+sensor_stop(bota_ft_sensor_driver)

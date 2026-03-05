@@ -244,13 +244,13 @@ def start_experiment(experiment_num: int):
         u[k] = PID_control(theta_d, k, t, dt, I, J, theta, vel, acc, err, errdot, ecumul)
 
         [s,force[k,:],torque[k,:]] = sensor_read(bota_ft_sensor_driver)
+        #TODO: WRITE THIS TO A FILE
         print(f"k: {k}\nForce: {force[k]}\nTorque: {torque[k]}\n")
         #write data for current timestep to log file
         file.write("%5.0i    %4.3f  %10.2f  %10.2f %10.2f %10.2f %10.2f %10.2f\n" % (k,t[k], theta[k], err[k], errdot[k], ecumul[k], umotor[k], u[k]))
 
         #Drive the Motor
         try:
-            #TODO: This only sets it for one axis, change it to set it for all axes
             set_wheel_torque(axis_map[axes[0]], u[k])
             umotor[k] = read_data('TORQUE')[0][0]
             SPINNING = True
