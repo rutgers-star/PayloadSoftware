@@ -162,6 +162,7 @@ tol=0.5    # Tolerance to angle reaching desired angle
 kp0=0.0075 
 kd0=0.0015
 ki0=0.001
+kt0 = 0.01 # NEW: For torque sensor 
 
 # Freqency Response
 wn=math.sqrt(kp0/I)
@@ -183,6 +184,15 @@ u=np.empty(MAX_ITER)
 umotor=np.empty(MAX_ITER)
 force = np.empty((MAX_ITER,3))
 torque = np.empty((MAX_ITER,3))
+yaw = np.zeros(MAX_ITER)
+pitch = np.zeros(MAX_ITER)
+roll = np.zeros(MAX_ITER)
+dyawdt = np.zeros(MAX_ITER)
+dpitchdt = np.zeros(MAX_ITER)
+drolldt = np.zeros(MAX_ITER)
+ddyawdt2 = np.zeros(MAX_ITER)
+ddpitchdt2 = np.zeros(MAX_ITER)
+ddrolldt2 = np.zeros(MAX_ITER)
 
 # Initial conditions on key variables
 meantheta=0
@@ -220,10 +230,9 @@ def start_experiment(experiment_num: int):
     hardware_startup(experiment)
 
     #TODO: better logging
-    filename = f"{str(date.today())}_{str(time.localtime().tm_hour)}-{str(time.localtime().tm_min)}.explog"
+    filename = f"{str(date.today())}_{str(time.localtime().tm_hour)}-{str(time.localtime().tm_min)}.csv"
     file = open(filename, "w")
-    file.write("PID Control Loop Outputs\nk    t[k]  theta[k]  err[k] errdot[k] ecumul[k] umotor[k] u[k]\n")
-
+    file.write("k, t[k], yaw[k], pitch[k], roll[k], dyawdt[k], dpitchdt[k], drolldt[k], ddyawdt2[k], ddpitchdt2[k], ddrolldt2[k], a, a, a, umotor[k], 0.0, 0.0, force[k,0], force[k,1], force[k,2], torque[k,0], torque[k,1], torque[k,2], theta[k], err[k], errdot[k], ecumul[k], u[k]\n")
 
     ########### MAIN CONTROL LOOP START ###########
     while (k < MAX_ITER):
@@ -232,22 +241,47 @@ def start_experiment(experiment_num: int):
         dt=t[k] - t[k-1]
         
         # Get IMU data
-        yaw,pitch,roll=imu_data(imu,yaw0,yawOld)
-        theta[k]=yaw
+        yaw[k],pitch[k],roll[k]=imu_data(imu,yaw0,yawOld)
+        theta[k]=yaw[k]
         vel[k] = (theta[k]) - theta[k-1]/dt
         acc[k]=(vel[k] - vel[k-1])/dt
         err[k]=(theta[k] - theta_d)
         errdot[k]=(err[k] - err[k-1])/dt
         ecumul[k]=ecumul[k-1] + err[k]*dt
 
-        # Control Algorithm Using PID Controller
-        u[k] = PID_control(theta_d, k, t, dt, I, J, theta, vel, acc, err, errdot, ecumul)
-
         [s,force[k,:],torque[k,:]] = sensor_read(bota_ft_sensor_driver)
+
+        # Control Algorithm Using PID Controller
+        u[k] = PID_control(theta_d, k, t, dt, I, J, theta, vel, acc, err, errdot, ecumul, kt0, kp0, kd0, ki0, torque[k,:])
+
+        dyawdt[k]=(yaw[k] - yaw[k-1])/dt
+        dpitchdt[k]=(pitch[k] - pitch[k-1])/dt
+        drolldt[k]=(roll[k] - roll[k-1])/dt
+        dyawdt[0]=0.0
+        dpitchdt[0]=0.0
+        drolldt[0]=0.0
+
+        ddyawdt2[k]=(dyawdt[k] - dyawdt[k-1])/dt
+        ddpitchdt2[k]=(dpitchdt[k] - dpitchdt[k-1])/dt
+        ddrolldt2[k]=(drolldt[k] - drolldt[k-1])/dt
+
         #TODO: WRITE THIS TO A FILE
         print(f"k: {k}\nForce: {force[k]}\nTorque: {torque[k]}\n")
-        #write data for current timestep to log file
-        file.write("%5.0i    %4.3f  %10.2f  %10.2f %10.2f %10.2f %10.2f %10.2f\n" % (k,t[k], theta[k], err[k], errdot[k], ecumul[k], umotor[k], u[k]))
+        a=0.0  # Linear acceleration a is not needed. Included here just for unuiformity of input/output files into SINDy. Linear acceleration a is not needed.
+
+        
+        # Write data for current timestep to log file 
+
+        file.write("%5.0i, %4.3f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %10.2f, %10.2f, %10.2f, %10.2f, %10.2f\n" %  
+            (k, t[k], 
+            yaw[k], pitch[k], roll[k], 
+            dyawdt[k], dpitchdt[k], drolldt[k], 
+            ddyawdt2[k], ddpitchdt2[k], ddrolldt2[k], 
+            a, a, a, 
+            umotor[k], 0.0, 0.0, 
+            force[k,0], force[k,1], force[k,2], 
+            torque[k,0], torque[k,1], torque[k,2], 
+            theta[k], err[k], errdot[k], ecumul[k], u[k]))
 
         #Drive the Motor
         try:
