@@ -25,7 +25,7 @@ import matplotlib.pyplot as plt
 from imu_control import init_imu, imu_data
 from camera_control import init_camera, close_camera
 from control import PID_control
-from plot_tools import plot_sloshy
+from plot_tools import plot_sloshy, plotforcestorques
 from dce_control import set_wheel_torque, set_wheel_speed, dce_startup, read_data
 from led_control import init_led, led_off, led_on, close_led
 from sensor_control import sensor_start, sensor_read, sensor_stop
@@ -125,6 +125,7 @@ def end_experiment(error=False):
 
         #TODO: Figure this out later
         plot_sloshy(t, theta, theta_d, u, umotor, err, errdot, ecumul)
+        plotforcestorques(t, u, force, torque)
         plt.show()
 
     if error:
