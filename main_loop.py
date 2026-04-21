@@ -101,6 +101,7 @@ def hardware_startup(experiment: Experiment):
     ########### CAMERA STARTUP CODE END ###########
 
 def end_experiment(error=False):
+    global t, theta, theta_d, u, umotor, err, errdot, ecumul, force, torque
     """
     Ends the current experiment and make sure everything thing is return to its initial state
 
