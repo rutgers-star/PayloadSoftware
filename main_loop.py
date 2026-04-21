@@ -273,17 +273,6 @@ def start_experiment(experiment_num: int):
         
         # Write data for current timestep to log file 
 
-        file.write("%5.0i, %4.3f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %10.2f, %10.2f, %10.2f, %10.2f, %10.2f\n" %  
-            (k, t[k], 
-            yaw[k], pitch[k], roll[k], 
-            dyawdt[k], dpitchdt[k], drolldt[k], 
-            ddyawdt2[k], ddpitchdt2[k], ddrolldt2[k], 
-            a, a, a, 
-            umotor[k], 0.0, 0.0, 
-            force[k,0], force[k,1], force[k,2], 
-            torque[k,0], torque[k,1], torque[k,2], 
-            theta[k], err[k], errdot[k], ecumul[k], u[k]))
-
         #Drive the Motor
         try:
             global SPINNING
@@ -298,6 +287,17 @@ def start_experiment(experiment_num: int):
 
         if (k > 10): 
             meantheta=np.mean(theta[k-10:k])
+
+        file.write("%5.0i, %4.3f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %8.4f, %10.2f, %10.2f, %10.2f, %10.2f, %10.2f\n" %  
+            (k, t[k], 
+            yaw[k], pitch[k], roll[k], 
+            dyawdt[k], dpitchdt[k], drolldt[k], 
+            ddyawdt2[k], ddpitchdt2[k], ddrolldt2[k], 
+            a, a, a, 
+            umotor[k], 0.0, 0.0, 
+            force[k,0], force[k,1], force[k,2], 
+            torque[k,0], torque[k,1], torque[k,2], 
+            theta[k], err[k], errdot[k], ecumul[k], u[k]))
 
         yawOld=theta[k]
         k=k+1
