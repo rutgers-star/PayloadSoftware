@@ -233,7 +233,7 @@ def start_experiment(experiment_num: int):
     #TODO: better logging
     filename = f"{str(date.today())}_{str(time.localtime().tm_hour)}-{str(time.localtime().tm_min)}.csv"
     file = open(filename, "w")
-    file.write("k, t[k], yaw[k], pitch[k], roll[k], dyawdt[k], dpitchdt[k], drolldt[k], ddyawdt2[k], ddpitchdt2[k], ddrolldt2[k], a, a, a, umotor[k], 0.0, 0.0, force[k,0], force[k,1], force[k,2], torque[k,0], torque[k,1], torque[k,2], theta[k], err[k], errdot[k], ecumul[k], u[k]\n")
+    file.write("k, t[k], yaw[k], pitch[k], roll[k], dyawdt[k], dpitchdt[k], drolldt[k], ddyawdt2[k], ddpitchdt2[k], ddrolldt2[k], a, a, a, umotor[k], 0.0, 0.0, force[k 0], force[k 1], force[k 2], torque[k 0], torque[k 1], torque[k 2], theta[k], err[k], errdot[k], ecumul[k], u[k]\n")
 
     ########### MAIN CONTROL LOOP START ###########
     while (k < MAX_ITER):
@@ -286,6 +286,7 @@ def start_experiment(experiment_num: int):
 
         #Drive the Motor
         try:
+            global SPINNING
             set_wheel_torque(axis_map[axes[0]], u[k])
             umotor[k] = read_data('TORQUE')[0][0]
             SPINNING = True
