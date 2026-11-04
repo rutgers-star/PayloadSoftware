@@ -1,4 +1,5 @@
 import numpy as np
+import time
 from sensor_control import sensor_start, sensor_read, sensor_stop
 
 k = 1
@@ -9,9 +10,11 @@ status = np.zeros((maxiter,3))
 
 bota_ft_sensor_driver = sensor_start("bota_binary_gen0.json")
 
+currentTime = time.time_ns() / 1_000_000
 while k < maxiter:
     [s,force[k,:],torque[k,:]] = sensor_read(bota_ft_sensor_driver)
-    print(f"iter: {k}\nForce: {force[k]}\n Torque: {torque[k]}\n")
+    print(f"iter: {k}\nForce: {force[k]}\n Torque: {torque[k]}\nTime: {(time.time_ns() / 1_000_000) - currentTime}")
     k += 1
+    currentTime = time.time_ns() / 1_000_000
 
 sensor_stop(bota_ft_sensor_driver)
