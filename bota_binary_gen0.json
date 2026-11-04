@@ -8,7 +8,7 @@
             "baudrate": 460800
         },
         "sensor_operation_params": {
-            "sinc_length": 2,
+            "sinc_length": 64,
             "wrench_offset": {
                 "fx": 0.0,
                 "fy": 0.0,

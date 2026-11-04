@@ -10,11 +10,20 @@ status = np.zeros((maxiter,3))
 
 bota_ft_sensor_driver = sensor_start("bota_binary_gen0.json")
 
+startTime = time.time_ns() / 1_000_000
 currentTime = time.time_ns() / 1_000_000
+iterations_before_60 = 0
+maxDelta = -1
 while k < maxiter:
     [s,force[k,:],torque[k,:]] = sensor_read(bota_ft_sensor_driver)
-    print(f"iter: {k}\nForce: {force[k]}\n Torque: {torque[k]}\nTime: {(time.time_ns() / 1_000_000) - currentTime}")
+    currentTime = time.time_ns() / 1_000_000
+    delta = currentTime - currentTime
+    if currentTime - startTime < 60000: 
+        iterations_before_60 += 1
+    maxDelta = max(delta, maxDelta)
+    print(f"iter: {k}\nForce: {force[k]}\n Torque: {torque[k]}\n")
     k += 1
     currentTime = time.time_ns() / 1_000_000
 
+print(f"Max delta: {maxDelta}, Iterations before 60s: {iterations_before_60}")
 sensor_stop(bota_ft_sensor_driver)
