@@ -1,6 +1,7 @@
 import numpy as np
 import time
 from sensor_control import sensor_start, sensor_read, sensor_stop
+from camera_control import init_camera, close_camera
 
 k = 1
 maxiter = 100
@@ -8,6 +9,7 @@ force = np.zeros((maxiter,3))
 torque = np.zeros((maxiter,3))
 status = np.zeros((maxiter,3))
 
+init_camera()
 bota_ft_sensor_driver = sensor_start("bota_binary_gen0.json")
 
 startTime = time.time_ns() / 1_000_000
@@ -27,3 +29,4 @@ while k < maxiter:
 
 print(f"Max delta: {maxDelta}, Iterations before 60s: {iterations_before_60}")
 sensor_stop(bota_ft_sensor_driver)
+close_camera()
